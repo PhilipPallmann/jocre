@@ -1,0 +1,11 @@
+Package: jocre
+Type: Package
+Title: Joint Confidence Regions
+Version: 0.1
+Date: 2016-09-27
+Authors@R: person("Philip", "Pallmann", role=c("aut", "cre"), email="p.pallmann@lancaster.ac.uk")
+Description: Computing and plotting joint confidence regions and intervals.
+License: GPL-2
+Imports: boot, KernSmooth
+Suggests: mvtnorm
+BugReports: https://github.com/PhilipPallmann/jocre/issues

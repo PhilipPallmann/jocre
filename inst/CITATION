@@ -1,0 +1,10 @@
+citHeader("Please cite the jocre package in publications as follows:")
+
+citEntry(entry = "Manual",
+         title = "jocre: Joint confidence regions",
+         author = personList(person(given="Philip", family="Pallmann")),
+         year = "2016",
+         note = "R package version 0.1",
+         url = "https://github.com/PhilipPallmann/jocre",
+         textVersion = paste("Philip Pallmann (2016) jocre: Joint confidence regions. R package version 0.1. https://github.com/PhilipPallmann/jocre")
+         )
