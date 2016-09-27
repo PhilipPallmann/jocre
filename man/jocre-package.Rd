@@ -10,34 +10,37 @@ Joint confidence regions
 }
 
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
-}
+This package provides functions for computing and plotting joint confidence regions as well as (simultaneous) confidence intervals, with a focus on multivariate normal parameter vectors and parameters of the normal distribution i.e., mean and variance.}
 
 \details{
 \tabular{ll}{
 Package: \tab jocre\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
-Date: \tab 2016-07-07\cr
+Date: \tab 2016-09-27\cr
 License: \tab GPL-2\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+\code{plot2D} generates plots of joint confidence regions or (simultaneous) confidence intervals in two dimensions and allows for fine tuning e.g., shading of an equivalence region. The confidence region's boundaries can be found with \code{confset}, whereas \code{confints} computes (simultaneous) confidence intervals.
+
+\code{plotMV2D} produces graphics of joint confidence regions for the mean and variance (or standard deviation) of a normal distribution.
+
+Insights into the conservativeness of the two one-sided test procedure can be obtained with \code{iutsize}.
+
+CIGE \dots
 }
 \author{
 Philip Pallmann (\email{p.pallmann@lancaster.ac.uk})
 }
 \references{
-~~ Literature or other references for background information ~~
+Philip Pallmann (2016) Joint confidence regions with the R package jocre. In preparation.
 }
 
 \keyword{package}
 
-\seealso{xxx
-%~~ Optional links to other man pages, e.g. ~~
-%~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-}
-
 \examples{
-# simple examples of the most important functions ~~
+data("marzo")
+#plot2D()
+
+data("wires")
+#plotMV2D()
 }
