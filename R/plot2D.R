@@ -1,6 +1,6 @@
 plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="Title",
                    xlim=log(c(0.77, 1.3)), ylim=log(c(0.77, 1.3)), col="black", steps=400,
-                   searchwidth=8, nboot=1e4, TsengBrownA=1, TsengBrownB=1){
+                   nboot=1e4, TsengBrownA=1, TsengBrownB=1){
   
   if(ncol(dat)!=2){
     stop("Data must be bivariate.")
@@ -10,6 +10,8 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
   
   method <- match.arg(method, choices=c("bootkern", "emp.bayes", "expanded", "fixseq", "hotelling", "limacon.asy",
                                         "limacon.fin", "standard.cor", "standard.ind", "tost", "tseng", "tseng.brown"))
+  
+  searchwidth <- 2
   
   if(method=="bootkern"){
     
@@ -71,7 +73,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -82,6 +84,28 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrCas)[findcrCas==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrCas <- apply(grid, 1, function(x){
+        theta <- matrix(x, 2)
+        sqrt(sum((theta - est)^2)) < (s * sqrt(2 * qf(p=1 - alpha, df1=2, df2=df)))
+      })
+      
+      crFinal <- cbind(grid, findcrCas)[findcrCas==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   
@@ -187,7 +211,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -198,6 +222,28 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrHot)[findcrHot==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrHot <- apply(grid, 1, function(x){
+        theta <- matrix(x, 2)
+        (n * t(est - theta) %*% solve(cov) %*% (est - theta)) < qf(p=1 - alpha, df1=2, df2=df - 1) * 2 * df / (df - 1)
+      })
+      
+      crFinal <- cbind(grid, findcrHot)[findcrHot==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   
@@ -213,7 +259,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -225,6 +271,29 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrLim)[findcrLim==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrLim <- apply(grid, 1, function(x){
+        theta <- matrix(x, 2)
+        ((t(theta) %*% solve(cov) %*% est) / sqrt(t(theta) %*% solve(cov) %*% theta) * sqrt(n) + qnorm(1 - alpha)) >
+          (sqrt(t(theta) %*% solve(cov) %*% theta) * sqrt(n))
+      })
+      
+      crFinal <- cbind(grid, findcrLim)[findcrLim==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
 
@@ -240,7 +309,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -252,6 +321,29 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrLim)[findcrLim==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrLim <- apply(grid, 1, function(x){
+        theta <- matrix(x, 2)
+        ((t(theta) %*% est) / sqrt((t(theta) %*% cov %*% theta) / n) + qt(1 - alpha, df)) >
+          ((t(theta) %*% theta) / sqrt((t(theta) %*% cov %*% theta) / n))
+      })
+      
+      crFinal <- cbind(grid, findcrLim)[findcrLim==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   
@@ -268,7 +360,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -280,6 +372,29 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrUsu)[findcrUsu==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrUsu <- apply(grid, 1, function(x){
+        theta <- x
+        #sqrt(sum((est - theta)^2))^2 < (s2 * 2 * qf(p=1 - alpha, df1=2, df2=n - 1))
+        t(est - theta) %*% LambdaInv %*% (est - theta) < (2 / (n - 1) * qf(p=1 - alpha, df1=2, df2=n - 1))
+      })
+      
+      crFinal <- cbind(grid, findcrUsu)[findcrUsu==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   
@@ -295,7 +410,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -306,6 +421,28 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrUsu)[findcrUsu==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrUsu <- apply(grid, 1, function(x){
+        theta <- x
+        sqrt(sum((est - theta)^2))^2 < (s2 * 2 * qf(p=1 - alpha, df1=2, df2=n - 1))
+      })
+      
+      crFinal <- cbind(grid, findcrUsu)[findcrUsu==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   
@@ -349,7 +486,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -360,6 +497,28 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrTse)[findcrTse==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrTse <- apply(grid, 1, function(x){
+        theta <- x
+        (sqrt(sum(est^2))^2 / (2 * s2)) > qf(p=alpha, df1=2, df2=df, ncp=(sqrt(sum(theta^2))^2 / s2))
+      })
+      
+      crFinal <- cbind(grid, findcrTse)[findcrTse==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   
@@ -375,7 +534,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     togrid <- list()
     
     for(i in 1:2){
-      togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      togrid[[i]] <- seq(est[i] - poolvar, est[i] + poolvar, length.out=steps)
     }
     
     grid <- expand.grid(togrid)
@@ -387,6 +546,29 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     })
     
     crFinal <- cbind(grid, findcrTse)[findcrTse==1, ]
+    
+    while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+            min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+      
+      togrid <- list()
+      
+      for(i in 1:2){
+        togrid[[i]] <- seq(est[i] - searchwidth * poolvar, est[i] + searchwidth * poolvar, length.out=steps)
+      }
+      
+      grid <- expand.grid(togrid)
+      
+      findcrTse <- apply(grid, 1, function(x){
+        theta <- x
+        (sqrt(sum((est - theta * (1 + (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))))^2))^2) <
+          qchisq(p=alpha, df=2, ncp=((sqrt(sum(theta^2))^2) * (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))^2))
+      })
+      
+      crFinal <- cbind(grid, findcrTse)[findcrTse==1, ]
+      
+      searchwidth <- 2 * searchwidth
+      
+    }
     
   }
   

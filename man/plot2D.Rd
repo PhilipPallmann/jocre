@@ -8,7 +8,7 @@
 
 \usage{plot2D(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="Title",
        xlim=log(c(0.77, 1.3)), ylim=log(c(0.77, 1.3)), col="black", steps=400,
-       searchwidth=8, nboot=1e4, TsengBrownA=1, TsengBrownB=1)}
+       nboot=1e4, TsengBrownA=1, TsengBrownB=1)}
 
 \arguments{
   \item{dat}{A matrix or data.frame with independent units in rows and multivariate outcomes in columns. It must have two columns.}
@@ -21,7 +21,6 @@
   \item{ylim}{A numeric vector of length two specifying the plotting range on the y-axis. Default is \code{log(c(0.77, 1.3))}.}
   \item{col}{A character string specifying the colour of the plotted region or intervals.}
   \item{steps}{An integer setting the initial number of steps for the search algorithm.}
-  \item{searchwidth}{A numeric specifying the step width for the search algorithm.}
   \item{nboot}{An integer giving the number of bootstrap replications, which is only required for \code{method="bootkern"}. Default is 10000.}
   \item{TsengBrownA}{A numeric giving the parameter A to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
   \item{TsengBrownB}{A numeric giving the parameter B to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
