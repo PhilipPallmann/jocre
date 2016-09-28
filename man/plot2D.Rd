@@ -6,18 +6,19 @@
 
 \description{Creates graphs of (simultaneous) confidence regions and intervals around multivariate normal means using different methods for computing the confidence sets.}
 
-\usage{plot2D(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
-       axnames=NULL, main="Title", col="black", steps=400, searchwidth=8,
-       nboot=1e4, TsengBrownA=1, TsengBrownB=1)}
+\usage{plot2D(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="Title",
+       xlim=log(c(0.77, 1.3)), ylim=log(c(0.77, 1.3)), col="black", steps=400,
+       searchwidth=8, nboot=1e4, TsengBrownA=1, TsengBrownB=1)}
 
 \arguments{
   \item{dat}{A matrix or data.frame with independent units in rows and multivariate outcomes in columns. It must have two columns.}
   \item{method}{A character string specifying the method to be used. See details for available \code{method}s.}
   \item{alpha}{A numeric value giving the type I error level to be controlled. Default is \code{0.1}.}
-  \item{equi}{A numeric value specifying the equivalence region to be shaded in grey. The value itself defines the upper equivalence threshold and its inverse the lower threshold. When set to \code{NULL} no equivalence region is drawn. Default is \code{1.25}.}
-  \item{plotrange}{A numeric vector of length two specifying the plotting area in both directions (x and y). Default is \code{c(0.77, 1.3)}.}
+  \item{equi}{A numeric value specifying the equivalence region to be shaded in grey. The value itself defines the upper equivalence threshold and its inverse the lower threshold. When set to \code{NULL} no equivalence region is drawn. Default is \code{log(1.25)}.}
   \item{axnames}{A vector of two character strings giving the x and y axis labels. When set to \code{NULL} the column names of \code{dat} are used as axis labels. Default is \code{NULL}.}
   \item{main}{A character string giving the plot title.}
+  \item{xlim}{A numeric vector of length two specifying the plotting range on the x-axis. Default is \code{log(c(0.77, 1.3))}.}
+  \item{ylim}{A numeric vector of length two specifying the plotting range on the y-axis. Default is \code{log(c(0.77, 1.3))}.}
   \item{col}{A character string specifying the colour of the plotted region or intervals.}
   \item{steps}{An integer setting the initial number of steps for the search algorithm.}
   \item{searchwidth}{A numeric specifying the step width for the search algorithm.}
@@ -31,6 +32,8 @@
 Available \code{method}s are: \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{expanded} for the two one-sided test (TOST) procedure (Schuirmann 1987) using the expanded intervals described e.g., in Bofinger (1992) and Hsu et al. (1994); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters; \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997). See also an overview and comparison of all methods in Pallmann & Jaki (2016).
 
 bootkern
+
+The default choices of \code{equi}, \code{xlim}, and \code{ylim} are convenient for many bioequivalence settings but can of course be modified as needed.
 }
 
 \value{A graphical display of a (simultaneous) confidence set in two dimensions.}

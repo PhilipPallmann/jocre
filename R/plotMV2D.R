@@ -1,5 +1,5 @@
 plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "Variance"),
-                     main="Title", col="black", steps=400, searchwidth=1){
+                     main="Title", xlim=NULL, ylim=NULL, col="black", steps=400, searchwidth=1){
   
   method <- match.arg(method, choices=c("mood", "large", "plugin", "pluginF", "lrt", "cheng.iles", "min.area"))
   scale <- match.arg(scale, choices=c("var", "sd"))
@@ -125,8 +125,17 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       crFinal[, 2] <- sqrt(crFinal[, 2])
     }
     
-    xlims <- range(crFinal[, 1])
-    ylims <- range(crFinal[, 2])
+    if(is.null(xlim)==FALSE){
+      xlims <- xlim
+    }else{
+      xlims <- range(crFinal[, 1])
+    }
+    
+    if(is.null(ylim)==FALSE){
+      ylims <- ylim
+    }else{
+      ylims <- range(crFinal[, 2])
+    }
     
     par(mar=c(5, 5, 4, 2))
     plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axnames[1], ylab=axnames[2],
@@ -431,8 +440,17 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       
     }
     
-    xlims <- range(grid[, 1])
-    ylims <- range(grid[, 2])
+    if(is.null(xlim)==FALSE){
+      xlims <- xlim
+    }else{
+      xlims <- range(grid[, 1])
+    }
+    
+    if(is.null(ylim)==FALSE){
+      ylims <- ylim
+    }else{
+      ylims <- range(grid[, 2])
+    }
     
     par(mar=c(5, 5, 4, 2))
     plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axnames[1], ylab=axnames[2],

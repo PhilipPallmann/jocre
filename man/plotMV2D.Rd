@@ -7,7 +7,7 @@
 \description{Creates graphs of (simultaneous) confidence regions for the mean and variance of a normal distribution using different methods.}
 
 \usage{plotMV2D(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "Variance"),
-                main="Title", col="black", steps=400, searchwidth=1)}
+                main="Title", xlim=NULL, ylim=NULL, col="black", steps=400, searchwidth=1)}
 
 \arguments{
   \item{dat}{A vector of numeric values assumed to follow a normal distribution. Not required for \code{method="cheng.iles"} or "min.area".}
@@ -17,6 +17,8 @@
   \item{scale}{A character string specifying whether the variance (\code{var}) or standard deviation (\code{sd}) is to be plotted on the y axis.}
   \item{axnames}{A vector of two character strings giving the x and y axis labels.}
   \item{main}{A character string giving the plot title.}
+  \item{xlim}{A numeric vector of length two specifying the plotting range on the x-axis. Default is \code{NULL}.}
+  \item{ylim}{A numeric vector of length two specifying the plotting range on the y-axis. Default is \code{NULL}.}
   \item{col}{A character string specifying the colour of the plotted region or intervals.}
   \item{steps}{An integer setting the initial number of steps for the search algorithm.}
   \item{searchwidth}{A numeric specifying the step width for the search algorithm.}

@@ -1,6 +1,6 @@
-plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
-                   axnames=NULL, main="Title", col="black", steps=400, searchwidth=8,
-                   nboot=1e4, TsengBrownA=1, TsengBrownB=1){
+plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="Title",
+                   xlim=log(c(0.77, 1.3)), ylim=log(c(0.77, 1.3)), col="black", steps=400,
+                   searchwidth=8, nboot=1e4, TsengBrownA=1, TsengBrownB=1){
   
   if(ncol(dat)!=2){
     stop("Data must be bivariate.")
@@ -48,7 +48,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
     }
     
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
       rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
@@ -104,7 +104,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
     }
     
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
       rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
@@ -164,7 +164,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
     }
     
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
       rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
@@ -326,7 +326,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
     }
     
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
       rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
@@ -404,7 +404,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
     }
     
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
       rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
@@ -429,7 +429,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=1.25, plotrange=c(0.77, 1.3),
     }
     
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
       rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
