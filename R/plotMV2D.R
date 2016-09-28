@@ -44,7 +44,7 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       togrid <- list()
       togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
                          mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
                          s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
@@ -65,7 +65,7 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       togrid <- list()
       togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
                          mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
                          s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
@@ -86,7 +86,7 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       togrid <- list()
       togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
                          mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
                          s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
@@ -107,7 +107,7 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       togrid <- list()
       togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
                          mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
                          s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
