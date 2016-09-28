@@ -18,8 +18,8 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * searchwidth * s / sqrt(n),
-                         mea + qnorm(1 - alpha/16) * searchwidth * s / sqrt(n), length.out=steps)
+      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
       togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
                          s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
@@ -42,9 +42,10 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16), s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
@@ -62,10 +63,10 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * n / (searchwidth * qchisq(df=df, 1 - alpha/16)),
-                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
@@ -83,10 +84,10 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * n / (searchwidth * qchisq(df=df, 1 - alpha/16)),
-                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
@@ -104,9 +105,10 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16), s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
