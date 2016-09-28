@@ -1,8 +1,12 @@
-plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "Variance"),
-                     main="Title", xlim=NULL, ylim=NULL, col="black", steps=400, searchwidth=1){
+plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
+                     main="Title", xlim=NULL, ylim=NULL, col="black", steps=400){
   
   method <- match.arg(method, choices=c("mood", "large", "plugin", "pluginF", "lrt", "cheng.iles", "min.area"))
   scale <- match.arg(scale, choices=c("var", "sd"))
+  
+  if((method %in% c("cheng.iles", "min.area")) & scale=="sd"){
+    stop("Please choose scale='var' for this method.")
+  }
   
   if(method %in% c("mood", "large", "plugin", "pluginF", "lrt")){
     
@@ -18,10 +22,10 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
-                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
@@ -31,6 +35,30 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
         grid[, 2] < s^2 * n / qchisq(df=df, alpha/2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      
+      while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+              min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+        
+        searchwidth <- 2
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- mea - qnorm(1 - alpha/2) * sqrt(grid[, 2]) / sqrt(n) < grid[, 1] &
+          grid[, 1] < mea + qnorm(1 - alpha/2) * sqrt(grid[, 2]) / sqrt(n) &
+          s^2 * n / qchisq(df=df, 1 - alpha/2) < grid[, 2] &
+          grid[, 2] < s^2 * n / qchisq(df=df, alpha/2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        
+        searchwidth <- searchwidth + 1
+      
+      }
       
     }
     
@@ -42,16 +70,37 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
-                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
       grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      
+      while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+              min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+        
+        searchwidth <- 2
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        
+        searchwidth <- searchwidth + 1
+        
+      }
       
     }
     
@@ -63,16 +112,37 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
-                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
       grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      
+      while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+              min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+        
+        searchwidth <- 2
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        
+        searchwidth <- searchwidth + 1
+        
+      }
       
     }
     
@@ -84,16 +154,37 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
-                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
       grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qf(1 - alpha, df1=2, df2=n - 2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      
+      while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+              min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+        
+        searchwidth <- 2
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qf(1 - alpha, df1=2, df2=n - 2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        
+        searchwidth <- searchwidth + 1
+        
+      }
       
     }
     
@@ -105,10 +196,10 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       s <- sqrt(var(dat) * df / n)
       
       togrid <- list()
-      togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
-                         mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
-      togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
-                         s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+      togrid[[1]] <- seq(mea - qnorm(1 - alpha/16) * s / sqrt(n),
+                         mea + qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+      togrid[[2]] <- seq(s^2 * n / qchisq(df=df, 1 - alpha/16),
+                         s^2 * n / qchisq(df=df, alpha/16), length.out=steps)
       
       grid <- expand.grid(togrid)
       
@@ -116,11 +207,27 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       
       crFinal <- grid[grid[, 3]==TRUE, ]
       
-    }
-    
-    if(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
-         min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
-      warning("The search grid is too narrow, please increase searchwidth.")
+      while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
+              min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
+        
+        searchwidth <- 2
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        
+        searchwidth <- searchwidth + 1
+        
+      }
+      
     }
     
     if(scale=="sd"){
@@ -139,8 +246,18 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       ylims <- range(crFinal[, 2])
     }
     
+    if(is.null(axnames)==TRUE){
+      if(scale=="var"){
+        axisnames <- c("Mean", "Variance")
+      }else{
+        axisnames <- c("Mean", "SD")
+      }
+    }else{
+      axisnames <- axnames
+    }
+    
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axnames[1], ylab=axnames[2],
+    plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     polygon(crFinal[chull(crFinal[, -3]), -3], col=col, border=col)
     points(mea, s^2, pch=19, col="white")
@@ -454,8 +571,14 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=c("Mean", "
       ylims <- range(grid[, 2])
     }
     
+    if(is.null(axnames)==TRUE){
+      axisnames <- c("Mean", "Variance")
+    }else{
+      axisnames <- axnames
+    }
+    
     par(mar=c(5, 5, 4, 2))
-    plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axnames[1], ylab=axnames[2],
+    plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     polygon(grid[chull(grid), ], col=col, border=col)
     points(0, 1, pch=19, col="white")
