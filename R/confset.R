@@ -3,6 +3,12 @@ confset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrown
   method <- match.arg(method, choices=c("bootkern", "emp.bayes", "hotelling", "limacon.asy", "limacon.fin",
                                         "standard.cor", "standard.ind", "tseng", "tseng.brown")) 
   
+  if(method=="bootkern"){
+    
+    stop("Not yet.")
+    
+  }
+  
   if(method=="emp.bayes"){
     
     n <- nrow(dat)
