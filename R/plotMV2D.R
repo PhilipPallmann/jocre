@@ -14,6 +14,8 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
       stop("dat must be a vector of numeric values.")
     }
     
+    searchwidth <- 2
+    
     if(method=="mood"){
       
       n <- length(dat)
@@ -38,8 +40,6 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
-        
-        searchwidth <- 2
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
@@ -84,8 +84,6 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
         
-        searchwidth <- 2
-        
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
                            mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
@@ -125,8 +123,6 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
-        
-        searchwidth <- 2
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
@@ -168,8 +164,6 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
         
-        searchwidth <- 2
-        
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
                            mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
@@ -209,8 +203,6 @@ plotMV2D <- function(dat, n, method, alpha=0.1, scale="var", axnames=NULL,
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
-        
-        searchwidth <- 2
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),

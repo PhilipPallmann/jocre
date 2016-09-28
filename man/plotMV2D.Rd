@@ -10,11 +10,11 @@
                 main="Title", xlim=NULL, ylim=NULL, col="black", steps=400)}
 
 \arguments{
-  \item{dat}{A vector of numeric values assumed to follow a normal distribution. Not required for \code{method="cheng.iles"} or "min.area".}
-  \item{n}{A numeric value giving the sample size. Only required for \code{method="cheng.iles"} or "min.area".}
+  \item{dat}{A vector of numeric values assumed to follow a normal distribution. Not required for \code{method="cheng.iles"} or \code{"min.area"}.}
+  \item{n}{A numeric value giving the sample size. Only required for \code{method="cheng.iles"} or \code{"min.area"}.}
   \item{method}{A character string specifying the method to be used. See details for available \code{method}s.}
   \item{alpha}{A numeric value giving the type I error level to be controlled. Default is \code{0.1}.}
-  \item{scale}{A character string specifying whether the variance (\code{var}) or standard deviation (\code{sd}) is to be plotted on the y axis.}
+  \item{scale}{A character string specifying whether the variance (\code{var}) or standard deviation (\code{sd}) is to be plotted on the y axis. Not required for \code{method="cheng.iles"} or \code{"min.area"}.}
   \item{axnames}{A vector of two character strings giving the x and y axis labels. Default is \code{NULL}.}
   \item{main}{A character string giving the plot title.}
   \item{xlim}{A numeric vector of length two specifying the plotting range on the x-axis. Default is \code{NULL}.}
