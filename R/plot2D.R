@@ -131,7 +131,10 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(c(0.8, 1.25)), axnames=NULL,
     plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
-      rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
+      if(length(equi)!=2){
+        stop("Length of equi must be 2.")
+      }
+      rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
     }
     segments(x0=ci[1], x1=ci[3], y0=est[2], y1=est[2], lwd=2, col=col)
     segments(y0=ci[2], y1=ci[4], x0=est[1], x1=est[1], lwd=2, col=col)
@@ -191,7 +194,10 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(c(0.8, 1.25)), axnames=NULL,
     plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
-      rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
+      if(length(equi)!=2){
+        stop("Length of equi must be 2.")
+      }
+      rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
     }
     segments(x0=T_1st[1], x1=T_1st[2], y0=est[2], y1=est[2], lwd=2, col=col)
     segments(y0=T_2nd[1], y1=T_2nd[2], x0=est[1], x1=est[1], lwd=2, col=col)
@@ -466,7 +472,10 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(c(0.8, 1.25)), axnames=NULL,
     plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
-      rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
+      if(length(equi)!=2){
+        stop("Length of equi must be 2.")
+      }
+      rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
     }
     segments(x0=ci[1], x1=ci[3], y0=est[2], y1=est[2], lwd=2, col=col)
     segments(y0=ci[2], y1=ci[4], x0=est[1], x1=est[1], lwd=2, col=col)
