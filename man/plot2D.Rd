@@ -6,7 +6,7 @@
 
 \description{Creates graphs of (simultaneous) confidence regions and intervals around multivariate normal means using different methods for computing the confidence sets.}
 
-\usage{plot2D(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="Title",
+\usage{plot2D(dat, method, alpha=0.1, equi=log(c(0.8, 1.25)), axnames=NULL, main="Title",
        xlim=log(c(0.77, 1.3)), ylim=log(c(0.77, 1.3)), col="black", steps=400,
        nboot=1e4, TsengBrownA=1, TsengBrownB=1)}
 
@@ -14,7 +14,7 @@
   \item{dat}{A matrix or data.frame with independent units in rows and multivariate outcomes in columns. It must have two columns.}
   \item{method}{A character string specifying the method to be used. See details for available \code{method}s.}
   \item{alpha}{A numeric value giving the type I error level to be controlled. Default is \code{0.1}.}
-  \item{equi}{A numeric value specifying the equivalence region to be shaded in grey. The value itself defines the upper equivalence threshold and its inverse the lower threshold. When set to \code{NULL} no equivalence region is drawn. Default is \code{log(1.25)}.}
+  \item{equi}{A numeric vector of length 2 specifying the equivalence region (lower and upper equivalence threshold) to be shaded in grey. When set to \code{NULL} no equivalence region is drawn. Default is \code{log(c(0.8, 1.25))}.}
   \item{axnames}{A vector of two character strings giving the x and y axis labels. When set to \code{NULL} the column names of \code{dat} are used as axis labels. Default is \code{NULL}.}
   \item{main}{A character string giving the plot title.}
   \item{xlim}{A numeric vector of length two specifying the plotting range on the x-axis. Default is \code{log(c(0.77, 1.3))}.}

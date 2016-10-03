@@ -1,4 +1,4 @@
-plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="Title",
+plot2D <- function(dat, method, alpha=0.1, equi=log(c(0.8, 1.25)), axnames=NULL, main="Title",
                    xlim=log(c(0.77, 1.3)), ylim=log(c(0.77, 1.3)), col="black", steps=400,
                    nboot=1e4, TsengBrownA=1, TsengBrownB=1){
   
@@ -589,7 +589,10 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
-      rect(1/equi, 1/equi, equi, equi, col="gray95", border=NA)
+      if(length(equi)!=2){
+        stop("Length of equi must be 2.")
+      }
+      rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
     }
     polygon(crFinal[chull(crFinal[, -3]), -3], col=col, border=col)
     points(est[1], est[2], pch=19, col="white")
@@ -614,7 +617,10 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(1.25), axnames=NULL, main="T
     plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
          cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
     if(is.null(equi)==FALSE){
-      rect(1/equi, 1/equi, equi, equi, col="gray95", border=NA)
+      if(length(equi)!=2){
+        stop("Length of equi must be 2.")
+      }
+      rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
     }
     points(crFinal[, -3], pch=20, col=col)
     points(est[1], est[2], pch=19, col="white")
