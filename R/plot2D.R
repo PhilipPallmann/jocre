@@ -624,6 +624,7 @@ plot2D <- function(dat, method, alpha=0.1, equi=log(c(0.8, 1.25)), axnames=NULL,
     }
     points(crFinal[, -3], pch=20, col=col)
     points(est[1], est[2], pch=19, col="white")
+    points(0, 0, pch="+", col="white", cex=2)
     par(mar=c(5, 4, 4, 2))
     
   }

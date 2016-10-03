@@ -33,6 +33,8 @@ Available \code{method}s are: \code{emp.bayes} for the empirical Bayes region de
 bootkern
 
 The default choices of \code{equi}, \code{xlim}, and \code{ylim} are convenient for many bioequivalence settings but can of course be modified as needed.
+
+White dot and white cross (the latter only where theta0 appears).
 }
 
 \value{A graphical display of a (simultaneous) confidence set in two dimensions.}
