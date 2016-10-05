@@ -70,6 +70,7 @@ Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for mu
 \seealso{\code{\link{confset}} and \code{\link{confints}} for confidence boundaries; \code{\link{plotMV2D}} for confidence regions for a normal mean and variance.}
 
 \examples{
+\dontrun{
 # Generate bivariate normal data
 
 mydata <- mvtnorm::rmvnorm(n=50, mean=rep(0.1, 2), sigma=diag(2) * 0.05)
@@ -80,19 +81,20 @@ ax <- c(expression(paste(Delta, " log(AUC)")), expression(paste(Delta, " log(Cma
 
 # Plot simultaneous 90% confidence regions
 
-#plot2D(dat=mydata, method="standard.ind", alpha=0.1, axnames=ax, main="Standard")
-#plot2D(dat=mydata, method="standard.cor", alpha=0.1, axnames=ax, main="Standard")
-#plot2D(dat=mydata, method="hotelling", alpha=0.1, axnames=ax, main="Hotelling")
-#plot2D(dat=mydata, method="limacon.asy", alpha=0.1, axnames=ax, main="Limacon")
-#plot2D(dat=mydata, method="limacon.fin", alpha=0.1, axnames=ax, main="Limacon")
-#plot2D(dat=mydata, method="tseng", alpha=0.1, axnames=ax, main="Tseng")
-#plot2D(dat=mydata, method="bootkern", alpha=0.1, axnames=ax, main="Bootstrap")
+plot2D(dat=mydata, method="standard.ind", alpha=0.1, axnames=ax, main="Standard")
+plot2D(dat=mydata, method="standard.cor", alpha=0.1, axnames=ax, main="Standard")
+plot2D(dat=mydata, method="hotelling", alpha=0.1, axnames=ax, main="Hotelling")
+plot2D(dat=mydata, method="limacon.asy", alpha=0.1, axnames=ax, main="Limacon")
+plot2D(dat=mydata, method="limacon.fin", alpha=0.1, axnames=ax, main="Limacon")
+plot2D(dat=mydata, method="tseng", alpha=0.1, axnames=ax, main="Tseng")
+plot2D(dat=mydata, method="bootkern", alpha=0.1, axnames=ax, main="Bootstrap")
 
 # Plot simultaneous 90% confidence intervals
 
-#plot2D(dat=mydata, method="tost", alpha=0.1, axnames=ax, main="TOST")
-#plot2D(dat=mydata, method="expanded", alpha=0.1, axnames=ax, main="Expanded TOST")
-#plot2D(dat=mydata, method="fixseq", alpha=0.1, axnames=ax, main="Fixed Sequence")
+plot2D(dat=mydata, method="tost", alpha=0.1, axnames=ax, main="TOST")
+plot2D(dat=mydata, method="expanded", alpha=0.1, axnames=ax, main="Expanded TOST")
+plot2D(dat=mydata, method="fixseq", alpha=0.1, axnames=ax, main="Fixed Sequence")
+}
 }
 
 \keyword{multivariate}

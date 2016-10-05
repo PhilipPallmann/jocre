@@ -40,6 +40,7 @@ Donald J. Schuirmann (1987) A comparison of the two one-sided tests procedure an
 \seealso{\code{\link{plot2D}} for plots.}
 
 \examples{
+\dontrun{
 # Generate trivariate normal data
 
 mydata <- mvtnorm::rmvnorm(n=50, mean=rep(0.1, 3), sigma=diag(3) * 0.05)
@@ -49,7 +50,8 @@ colnames(mydata) <- LETTERS[1:3]
 
 confints(dat=mydata, method="tost", alpha=0.1)
 confints(dat=mydata, method="expanded", alpha=0.1)
-#confints(dat=mydata, method="fixseq", alpha=0.1)
+confints(dat=mydata, method="fixseq", alpha=0.1)
+}
 }
 
 \keyword{multivariate}

@@ -54,6 +54,7 @@ Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for mu
 \seealso{\code{\link{plot2D}} for plots.}
 
 \examples{
+\dontrun{
 # Generate trivariate normal data
 
 mydata <- mvtnorm::rmvnorm(n=50, mean=rep(0.1, 3), sigma=diag(3) * 0.05)
@@ -61,13 +62,13 @@ colnames(mydata) <- LETTERS[1:3]
 
 # Compute boundaries of simultaneous 90% confidence regions
 
-#confset(dat=mydata, method="standard.ind", alpha=0.1)
-#confset(dat=mydata, method="standard.cor", alpha=0.1)
-#confset(dat=mydata, method="hotelling", alpha=0.1)
-#confset(dat=mydata, method="limacon.asy", alpha=0.1)
-#confset(dat=mydata, method="limacon.fin", alpha=0.1)
-#confset(dat=mydata, method="tseng", alpha=0.1)
-
+confset(dat=mydata, method="standard.ind", alpha=0.1)
+confset(dat=mydata, method="standard.cor", alpha=0.1)
+confset(dat=mydata, method="hotelling", alpha=0.1)
+confset(dat=mydata, method="limacon.asy", alpha=0.1)
+confset(dat=mydata, method="limacon.fin", alpha=0.1)
+confset(dat=mydata, method="tseng", alpha=0.1)
+}
 }
 
 \keyword{multivariate}
