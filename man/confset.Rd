@@ -17,12 +17,9 @@
   \item{TsengBrownB}{A numeric giving the parameter B to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
 }
 
-\details{x
+\details{Available \code{method}s are: \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters; \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997). See also an overview and comparison of all methods in Pallmann & Jaki (2016).}
 
-Available \code{method}s are: \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters; \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997). See also an overview and comparison of all methods in Pallmann & Jaki (2016).
-}
-
-\value{x}
+\value{A matrix of parameter estimates and confidence bounds.}
 
 \references{
 Roger L. Berger & Jason C. Hsu (1996) Bioequivalence trials, intersection-union tests and equivalence confidence sets. Statistical Science, 11(4), 283--319.
@@ -52,10 +49,9 @@ Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for mu
 
 \author{Philip Pallmann (\email{p.pallmann@lancaster.ac.uk})}
 
-\note{x}
+\note{Warning: please use with care! Some of the functionality has not yet been thoroughly tested.}
 
-\seealso{x % objects to See Also as \code{\link{help}}
-}
+\seealso{\code{\link{plot2D}} for plots.}
 
 \examples{
 # Generate trivariate normal data

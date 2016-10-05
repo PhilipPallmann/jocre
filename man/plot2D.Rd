@@ -26,11 +26,7 @@
   \item{TsengBrownB}{A numeric giving the parameter B to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
 }
 
-\details{xxx
-
-Available \code{method}s are: \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{expanded} for the two one-sided test (TOST) procedure (Schuirmann 1987) using the expanded intervals described e.g., in Bofinger (1992) and Hsu et al. (1994); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters; \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997). See also an overview and comparison of all methods in Pallmann & Jaki (2016).
-
-bootkern
+\details{Available \code{method}s are: \code{bootkern} for the bootstrap kernel density region described in Pallmann & Jaki (2016); \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{expanded} for the two one-sided test (TOST) procedure (Schuirmann 1987) using the expanded intervals described e.g., in Bofinger (1992) and Hsu et al. (1994); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters; \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997). See also an overview and comparison of all methods in Pallmann & Jaki (2016).
 
 The default choices of \code{equi}, \code{xlim}, and \code{ylim} are convenient for many bioequivalence settings but can of course be modified as needed.
 
@@ -65,16 +61,13 @@ Yu-Ling Tseng (2002) Optimal confidence sets for testing average bioequivalence.
 Yu-Ling Tseng & Lawrence D. Brown (1997) Good exact confidence sets for a multivariate normal mean. The Annals of Statistics, 25(5), 2228--2258.
 
 Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for multivariate bioequivalence. Biometrika, 86(2), 395--402.
-
-# bootkern not included so far
 }
 
 \author{Philip Pallmann (\email{p.pallmann@lancaster.ac.uk})}
 
-\note{x}
+\note{Warning: please use with care! Some of the functionality has not yet been thoroughly tested.}
 
-\seealso{x % objects to See Also as \code{\link{help}}
-}
+\seealso{\code{\link{confset}} and \code{\link{confints}} for confidence boundaries; \code{\link{plotMV2D}} for confidence regions for a normal mean and variance.}
 
 \examples{
 # Generate bivariate normal data
@@ -93,6 +86,7 @@ ax <- c(expression(paste(Delta, " log(AUC)")), expression(paste(Delta, " log(Cma
 #plot2D(dat=mydata, method="limacon.asy", alpha=0.1, axnames=ax, main="Limacon")
 #plot2D(dat=mydata, method="limacon.fin", alpha=0.1, axnames=ax, main="Limacon")
 #plot2D(dat=mydata, method="tseng", alpha=0.1, axnames=ax, main="Tseng")
+#plot2D(dat=mydata, method="bootkern", alpha=0.1, axnames=ax, main="Bootstrap")
 
 # Plot simultaneous 90% confidence intervals
 

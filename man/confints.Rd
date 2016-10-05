@@ -15,14 +15,14 @@
   \item{steps}{An integer setting the initial number of steps for the search algorithm.}
 }
 
-\details{x
+\details{Available \code{method}s are: \code{expanded} for the two one-sided test (TOST) procedure (Schuirmann 1987) using the expanded intervals described e.g., in Bofinger (1992) and Hsu et al. (1994); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987).}
 
-Available \code{method}s are: \code{tost} for xxxxxxxxxxxxxx; \code{expanded} for xxxxxxxxxxxx; \code{fixseq} for xxxxxxxxxxxxxxxxxxx.}
-
-\value{x}
+\value{A matrix of parameter estimates and confidence bounds.}
 
 \references{
 Eve Bofinger (1992) Expanded confidence intervals, one-sided tests, and equivalence testing. Journal of Biopharmaceutical Statistics, 2(2), 181--188.
+
+Jason C. Hsu & Roger L. Berger (1999) Stepwise confidence intervals without multiplicity adjustment for dose-response and toxicity studies. Journal of the American Statistical Association, 94(446), 468--482.
 
 Jason C. Hsu, J. T. Gene Hwang, Hung-Kung Liu, Stephen J. Ruberg (1994) Confidence intervals associated with tests for bioequivalence. Biometrika, 81(1), 103--114.
 
@@ -35,10 +35,9 @@ Donald J. Schuirmann (1987) A comparison of the two one-sided tests procedure an
 
 \author{Philip Pallmann (\email{p.pallmann@lancaster.ac.uk})}
 
-\note{x}
+\note{Warning: please use with care! Some of the functionality has not yet been thoroughly tested.}
 
-\seealso{x %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+\seealso{\code{\link{plot2D}} for plots.}
 
 \examples{
 # Generate trivariate normal data
