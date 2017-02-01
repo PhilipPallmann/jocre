@@ -305,7 +305,7 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
     
   }
   
-  Out <- list
+  Out <- list()
   
   Out$cr <- crFinal
   Out$ci <- ciFinal
