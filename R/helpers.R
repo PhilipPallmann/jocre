@@ -13,6 +13,10 @@ print.JOC <- summary.JOC <- function(x, digits=max(3, getOption("digits") - 4), 
 plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=log(c(0.77, 1.3)),
                      ylim=log(c(0.77, 1.3)), col="black", ...){
   
+  if(nrow(x$ci)!=2){
+    stop("Plotting only allowed for regions or intervals in 2 dimensions.")
+  }
+  
   if(is.null(axnames)==TRUE){
     axisnames <- colnames(dat)
   }else{
@@ -29,10 +33,10 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
   }
   if(x$method %in% c("limacon.asy", "limacon.fin", "tseng", "tseng.brown")){
-    points(crFinal[, -3], pch=20, col=col)
+    points(x$cr[, -3], pch=20, col=col)
   }
   if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
-    polygon(crFinal[chull(crFinal[, -3]), -3], col=col, border=col)
+    polygon(x$cr[chull(x$cr[, -3]), -3], col=col, border=col)
   }
   if(x$method %in% c("expanded", "tost")){
     segments(x0=ci[1], x1=ci[3], y0=est[2], y1=est[2], lwd=2, col=col)
