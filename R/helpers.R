@@ -10,7 +10,7 @@ print.JOC <- summary.JOC <- function(x, digits=max(3, getOption("digits") - 4), 
   print(res)
 }
 
-plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main="Title", xlim=log(c(0.77, 1.3)),
+plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=log(c(0.77, 1.3)),
                      ylim=log(c(0.77, 1.3)), col="black", ...){
   
   if(is.null(axnames)==TRUE){
