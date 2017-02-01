@@ -4,14 +4,16 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   p <- ncol(dat)
   df <- n - 1
   est <- matrix(colMeans(dat), p)
+  sd <- matrix(apply(dat, 2, sd), p)
   poolvar <- var(as.vector(as.matrix(dat)))
   cov <- cov(dat)
   solved <- solve(cov)
   #s2 <- poolvar/n
   #s <- sqrt(poolvar/n)
   
-  method <- match.arg(method, choices=c("bootkern", "emp.bayes", "hotelling", "limacon.asy", "limacon.fin",
-                                        "standard.cor", "standard.ind", "tseng", "tseng.brown"))
+  method <- match.arg(method, choices=c("bootkern", "emp.bayes", "expanded", "fixseq", "hotelling",
+                                        "limacon.asy", "limacon.fin", "standard.cor", "standard.ind",
+                                        "tost", "tseng", "tseng.brown"))
   
   if(method=="bootkern"){
     
@@ -65,6 +67,24 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
       searchwidth <- 2 * searchwidth
       
     }
+    
+  }
+  
+  if(method=="expanded"){
+    
+    ciFinal <- matrix(c(est - sd * qt(1 - alpha, df) / sqrt(n),
+                        est + sd * qt(1 - alpha, df) / sqrt(n)), ncol(dat))
+    
+    ciFinal[, 1] <- ifelse(ciFinal[, 1] > 0, 0, ciFinal[, 1])
+    ciFinal[, 2] <- ifelse(ciFinal[, 2] < 0, 0, ciFinal[, 2])
+    
+    crFinal <- NULL
+    
+  }
+  
+  if(method=="fixseq"){
+    
+    stop("Not implemented (yet).")
     
   }
   
@@ -219,6 +239,15 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
       searchwidth <- 2 * searchwidth
       
     }
+    
+  }
+  
+  if(method=="tost"){
+    
+    ciFinal <- matrix(c(est - sd * qt(1 - alpha, df) / sqrt(n),
+                        est + sd * qt(1 - alpha, df) / sqrt(n)), ncol(dat))
+    
+    crFinal <- NULL
     
   }
   
