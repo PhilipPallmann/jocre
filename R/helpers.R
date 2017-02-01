@@ -4,8 +4,8 @@ print.JOC <- summary.JOC <- function(x, digits=max(3, getOption("digits") - 4), 
             "% simultaneous confidence region\n", sep=""))
   
   res <- cbind(round(x$est, digits), round(x$ci, digits))
-  row.names(res) <- colnames(x$dat)
-  col.names(res) <- c("Estimate", "Lower", "Upper")
+  rownames(res) <- colnames(x$dat)
+  colnames(res) <- c("Estimate", "Lower", "Upper")
   
   print(res)
 }
