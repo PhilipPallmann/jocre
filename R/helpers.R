@@ -28,10 +28,10 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main="Title", xlim
     }
     rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
   }
-  if(method %in% c("limacon.asy", "limacon.fin", "tseng", "tseng.brown")){
+  if(x$method %in% c("limacon.asy", "limacon.fin", "tseng", "tseng.brown")){
     points(crFinal[, -3], pch=20, col=col)
   }
-  if(method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
+  if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
     polygon(crFinal[chull(crFinal[, -3]), -3], col=col, border=col)
   }
   points(est[1], est[2], pch=19, col="white")
