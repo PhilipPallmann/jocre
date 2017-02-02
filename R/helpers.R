@@ -40,10 +40,10 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     polygon(x$cr[chull(x$cr), -3], col=col, border=col)
   }
   if(x$method %in% c("expanded", "tost")){
-    segments(x0=ci[1], x1=ci[3], y0=est[2], y1=est[2], lwd=2, col=col)
-    segments(y0=ci[2], y1=ci[4], x0=est[1], x1=est[1], lwd=2, col=col)
+    segments(x0=x$ci[1], x1=x$ci[3], y0=x$est[2], y1=x$est[2], lwd=2, col=col)
+    segments(y0=x$ci[2], y1=x$ci[4], x0=x$est[1], x1=x$est[1], lwd=2, col=col)
   }
-  points(est[1], est[2], pch=19, col="white")
+  points(x$est[1], x$est[2], pch=19, col="white")
   points(0, 0, pch="+", col="white", cex=2)
   par(mar=c(5, 4, 4, 2))
   
