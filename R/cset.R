@@ -1,4 +1,4 @@
-cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1){
+cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1){
   
   n <- nrow(dat)
   p <- ncol(dat)
@@ -23,11 +23,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="emp.bayes"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -90,11 +90,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="hotelling"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -122,11 +122,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="limacon.asy"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -153,11 +153,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="limacon.fin"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -184,11 +184,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="standard.cor"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -214,11 +214,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="standard.ind"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -253,11 +253,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="tseng"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -295,11 +295,11 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   if(method=="tseng.brown"){
     
-    ciFinal <- cbind(est - 2 * poolvar, est + 2 * poolvar)
-    
     searchwidth <- 1
+    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - 2 * poolvar))) < 0.001 | min(abs(ciFinal[, 2] - (est + 2 * poolvar))) < 0.001){
+    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -336,7 +336,13 @@ cset <- function(dat, method, alpha=0.1, steps=100, TsengBrownA=1, TsengBrownB=1
   
   Out <- list()
   
-  Out$cr <- crFinal
+  if(p==2){
+    Out$cr <- rbind(ddply(crFinal, .(Var1), summarise, Var2=range(Var2)),
+                    ddply(crFinal, .(Var2), summarise, Var1=range(Var1)))
+  }
+  if(p > 2){
+    Out$cr <- NULL
+  }
   Out$ci <- ciFinal
   Out$n <- n
   Out$p <- p

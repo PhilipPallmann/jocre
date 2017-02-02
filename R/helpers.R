@@ -33,10 +33,10 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
   }
   if(x$method %in% c("limacon.asy", "limacon.fin", "tseng", "tseng.brown")){
-    points(x$cr[, -3], pch=20, col=col)
+    points(x$cr, pch=20, col=col)
   }
   if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
-    polygon(x$cr[chull(x$cr[, -3]), -3], col=col, border=col)
+    polygon(x$cr[chull(x$cr), -3], col=col, border=col)
   }
   if(x$method %in% c("expanded", "tost")){
     segments(x0=ci[1], x1=ci[3], y0=est[2], y1=est[2], lwd=2, col=col)
