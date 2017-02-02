@@ -53,7 +53,7 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
   
   par(mar=c(5, 5, 4, 2))
   plot(0, xlim=xlim, ylim=ylim, las=1, xlab=axisnames[1], ylab=axisnames[2],
-       cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main, ...)
+       cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main, type='n', ...)
   if(is.null(equi)==FALSE){
     if(length(equi)!=2){
       stop("Length of equi must be 2.")
@@ -126,7 +126,7 @@ plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL, ylim=NULL, col="bl
   
   par(mar=c(5, 5, 4, 2))
   plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
-       cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
+       cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main, type='n', ...)
   polygon(x$cr[chull(x$cr[, ]), ], col=NULL, border=col, lwd=2)
   if(x$scale=="var"){
     points(x$est, x$s^2, pch=19, col="black")
