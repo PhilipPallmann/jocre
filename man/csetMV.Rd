@@ -12,7 +12,7 @@
   \item{dat}{A vector of numeric values assumed to follow a normal distribution. Not required for \code{method="cheng.iles"} or \code{"min.area"}.}
   \item{n}{A numeric value giving the sample size. Only required for \code{method="cheng.iles"} or \code{"min.area"}.}
   \item{method}{A character string specifying the method to be used. See details for available \code{method}s.}
-  \item{alpha}{A numeric value giving the type I error level to be controlled. Default is 0.1.}
+  \item{alpha}{A numeric value giving the type I error level to be controlled. Default is \code{0.1}.}
   \item{scale}{A character string specifying whether the variance (\code{var}) or standard deviation (\code{sd}) is to be plotted on the y axis. Not required for \code{method="cheng.iles"} or \code{"min.area"}.}
   \item{steps}{An integer setting the initial number of steps for the search algorithm.}
 }
@@ -41,14 +41,16 @@ Alexander M. Mood (1950) Introduction to the Theory of Statistics. McGraw-Hill, 
 
 \examples{
 \dontrun{
-# Simultaneous 90% confidence regions for univariate normal data
+# Simultaneous 90\% confidence regions for the mean and variance or sd of univariate normal data
 
 univar <- rnorm(n=50)
 
 moodvar <- csetMV(dat=univar, method="mood", alpha=0.1, scale="var")
-moodsd <- csetMV(dat=univar, method="mood", alpha=0.1, scale="sd")
-
+summary(moodvar)
 plot(moodvar)
+
+moodsd <- csetMV(dat=univar, method="mood", alpha=0.1, scale="sd")
+summary(moodsd)
 plot(moodsd)
 }
 }
