@@ -8,6 +8,7 @@ print.JOC <- summary.JOC <- function(x, digits=max(3, getOption("digits") - 4), 
   colnames(res) <- c("Estimate", "Lower", "Upper")
   
   print(res)
+  
 }
 
 plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=log(c(0.77, 1.3)),
@@ -44,6 +45,51 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
   }
   points(est[1], est[2], pch=19, col="white")
   points(0, 0, pch="+", col="white", cex=2)
+  par(mar=c(5, 4, 4, 2))
+  
+}
+
+print.JOCMV <- summary.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
+  
+  cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - x$alpha),
+            "% simultaneous confidence region\n", sep=""))
+  
+  res <- cbind(round(x$est, digits), round(x$ci, digits))
+  colnames(res) <- c("Estimate", "Lower", "Upper")
+  
+  print(res)
+  
+}
+
+plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL), ylim=NULL, col="black", ...){
+  
+  if(is.null(xlim)==FALSE){
+    xlims <- xlim
+  }else{
+    xlims <- range(x$cr[, 1])
+  }
+  
+  if(is.null(ylim)==FALSE){
+    ylims <- ylim
+  }else{
+    ylims <- range(x$cr[, 2])
+  }
+  
+  if(is.null(axnames)==TRUE){
+    if(x$scale=="var"){
+      axisnames <- c("Mean", "Variance")
+    }else{
+      axisnames <- c("Mean", "SD")
+    }
+  }else{
+    axisnames <- axnames
+  }
+  
+  par(mar=c(5, 5, 4, 2))
+  plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
+       cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
+  polygon(x$cr[chull(x$cr[, ]), ], col=col, border=col)
+  points(x$est, x$s^2, pch=19, col="white")
   par(mar=c(5, 4, 4, 2))
   
 }

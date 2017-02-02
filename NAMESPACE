@@ -10,3 +10,7 @@ importFrom("stats", "pnorm", "qchisq", "qf", "qnorm", "qt", "rf", "var")
 S3method(plot, JOC)
 S3method(print, JOC)
 S3method(summary, JOC)
+
+S3method(plot, JOCMV)
+S3method(print, JOCMV)
+S3method(summary, JOCMV)
