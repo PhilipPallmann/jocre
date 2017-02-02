@@ -1,5 +1,7 @@
 cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1){
   
+  Var1 <- Var2 <- NULL # just to appease RCMD check
+  
   n <- nrow(dat)
   p <- ncol(dat)
   df <- n - 1

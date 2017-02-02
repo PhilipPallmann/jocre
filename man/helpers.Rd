@@ -17,17 +17,18 @@
 
 \method{print}{JOC}(x, digits=max(3, getOption("digits") - 4), \dots)
 
-\method{summary}{JOC}(x, digits=max(3, getOption("digits") - 4), \dots)
+\method{summary}{JOC}(object, digits=max(3, getOption("digits") - 4), \dots)
 
 \method{plot}{JOCMV}(x, axnames=NULL, main=NULL, xlim=NULL, ylim=NULL, col="black", \dots)
 
 \method{print}{JOCMV}(x, digits=max(3, getOption("digits") - 4), \dots)
 
-\method{summary}{JOCMV}(x, digits=max(3, getOption("digits") - 4), \dots)
+\method{summary}{JOCMV}(object, digits=max(3, getOption("digits") - 4), \dots)
 }
 
 \arguments{
   \item{x}{An output object of class \code{JOC} or \code{JOCMV}.}
+  \item{object}{An output object of class \code{JOC} or \code{JOCMV}.}
   \item{digits}{A numeric value giving the number of significant digits to be printed.}
   \item{equi}{A numeric vector of length 2 specifying the equivalence region (lower and upper equivalence threshold) to be shaded in grey. When set to \code{NULL} no equivalence region is drawn. Default is \code{log(c(0.8, 1.25))}.}
   \item{axnames}{A vector of two character strings giving the x and y axis labels. For \code{plot.JOC}, when set to \code{NULL} the column names of \code{dat} are used as axis labels. Default is \code{NULL}.}

@@ -1,10 +1,23 @@
-print.JOC <- summary.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
+print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
   cat(paste("Parameter estimates and projected boundaries of the ", x$p, "-dimensional ", 100 * (1 - x$alpha),
             "% simultaneous confidence region\n", sep=""))
   
   res <- cbind(round(x$est, digits), round(x$ci, digits))
   rownames(res) <- colnames(x$dat)
+  colnames(res) <- c("Estimate", "Lower", "Upper")
+  
+  print(res)
+  
+}
+
+summary.JOC <- function(object, digits=max(3, getOption("digits") - 4), ...){
+  
+  cat(paste("Parameter estimates and projected boundaries of the ", object$p, "-dimensional ", 100 * (1 - object$alpha),
+            "% simultaneous confidence region\n", sep=""))
+  
+  res <- cbind(round(object$est, digits), round(object$ci, digits))
+  rownames(res) <- colnames(object$dat)
   colnames(res) <- c("Estimate", "Lower", "Upper")
   
   print(res)
@@ -49,12 +62,24 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
   
 }
 
-print.JOCMV <- summary.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
+print.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
   cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - x$alpha),
             "% simultaneous confidence region\n", sep=""))
   
   res <- cbind(round(x$est, digits), round(x$ci, digits))
+  colnames(res) <- c("Estimate", "Lower", "Upper")
+  
+  print(res)
+  
+}
+
+summary.JOCMV <- function(object, digits=max(3, getOption("digits") - 4), ...){
+  
+  cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - object$alpha),
+            "% simultaneous confidence region\n", sep=""))
+  
+  res <- cbind(round(object$est, digits), round(object$ci, digits))
   colnames(res) <- c("Estimate", "Lower", "Upper")
   
   print(res)

@@ -1,5 +1,7 @@
 csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
   
+  Var1 <- Var2 <- NULL # just to appease RCMD check
+  
   method <- match.arg(method, choices=c("mood", "large", "plugin", "pluginF", "lrt", "cheng.iles", "min.area"))
   scale <- match.arg(scale, choices=c("var", "sd"))
   
