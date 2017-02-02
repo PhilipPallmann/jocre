@@ -19,7 +19,7 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
   }
   
   if(is.null(axnames)==TRUE){
-    axisnames <- colnames(dat)
+    axisnames <- colnames(x$dat)
   }else{
     axisnames <- axnames
   }
