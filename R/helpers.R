@@ -43,8 +43,8 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     segments(x0=x$ci[1], x1=x$ci[3], y0=x$est[2], y1=x$est[2], lwd=2, col=col)
     segments(y0=x$ci[2], y1=x$ci[4], x0=x$est[1], x1=x$est[1], lwd=2, col=col)
   }
-  points(x$est[1], x$est[2], pch=19, col="white")
-  points(0, 0, pch="+", col="white", cex=2)
+  points(x$est[1], x$est[2], pch=19, col="black")
+  points(0, 0, pch="+", col="black", cex=2)
   par(mar=c(5, 4, 4, 2))
   
 }
@@ -89,7 +89,11 @@ plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL, ylim=NULL, col="bl
   plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
        cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
   polygon(x$cr[chull(x$cr[, ]), ], col=col, border=col)
-  points(x$est, x$s^2, pch=19, col="white")
+  if(x$scale=="var"){
+    points(x$est, x$s^2, pch=19, col="black")
+  }else{
+    points(x$est, x$s, pch=19, col="black")
+  }
   par(mar=c(5, 4, 4, 2))
   
 }
