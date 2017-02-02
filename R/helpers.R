@@ -61,7 +61,7 @@ print.JOCMV <- summary.JOCMV <- function(x, digits=max(3, getOption("digits") - 
   
 }
 
-plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL), ylim=NULL, col="black", ...){
+plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL, ylim=NULL, col="black", ...){
   
   if(is.null(xlim)==FALSE){
     xlims <- xlim
