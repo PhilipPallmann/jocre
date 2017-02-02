@@ -6,7 +6,7 @@
 
 \description{Computes boundaries of (simultaneous) confidence regions and intervals around multivariate normal means using different methods.}
 
-\usage{ct(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1)}
+\usage{cset(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1)}
 
 \arguments{
   \item{dat}{A matrix or data.frame with independent units in rows and multivariate outcomes in columns.}
