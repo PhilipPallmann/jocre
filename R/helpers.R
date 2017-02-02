@@ -61,10 +61,10 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
   }
   if(x$method %in% c("limacon.asy", "limacon.fin", "tseng", "tseng.brown")){
-    points(x$cr, pch=20, col=col, cex=0.8)
+    points(x$cr, pch=20, col=col, cex=0.5)
   }
   if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
-    polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, cex=2)
+    polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)
   }
   if(x$method %in% c("expanded", "tost")){
     segments(x0=x$ci[1], x1=x$ci[3], y0=x$est[2], y1=x$est[2], lwd=2, col=col)
@@ -127,7 +127,7 @@ plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL, ylim=NULL, col="bl
   par(mar=c(5, 5, 4, 2))
   plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
        cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
-  polygon(x$cr[chull(x$cr[, ]), ], col=NULL, border=col, cex=2)
+  polygon(x$cr[chull(x$cr[, ]), ], col=NULL, border=col, lwd=2)
   if(x$scale=="var"){
     points(x$est, x$s^2, pch=19, col="black")
   }else{
