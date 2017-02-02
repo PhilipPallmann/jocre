@@ -473,6 +473,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
   if(scale=="sd"){
     crFinal[, 2] <- sqrt(crFinal[, 2])
     ciFinal[2, ] <- sqrt(ciFinal[2, ])
+  }
   
   Out <- list()
   
