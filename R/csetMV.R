@@ -36,6 +36,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
         grid[, 2] < s^2 * n / qchisq(df=df, alpha/2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
@@ -67,6 +68,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
       grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
@@ -95,6 +97,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
       grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
@@ -123,6 +126,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
       grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qf(1 - alpha, df1=2, df2=n - 2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
@@ -151,6 +155,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
       grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < qchisq(1 - alpha, df=2)
       
       crFinal <- grid[grid[, 3]==TRUE, ]
+      ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
       
       while(min(crFinal[, 1])==min(grid[, 1]) | max(crFinal[, 1])==max(grid[, 1]) |
               min(crFinal[, 2])==min(grid[, 2]) | max(crFinal[, 2])==max(grid[, 2])){
