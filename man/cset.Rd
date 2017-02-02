@@ -69,8 +69,8 @@ Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for mu
 
 trivar <- mvtnorm::rmvnorm(n=20, mean=rep(0.05, 3), sigma=diag(3) * 0.05)
 
-limacon <- cset(dat=trivar, method="tost", alpha=0.1)
-summary(limacon)
+tost <- cset(dat=trivar, method="tost", alpha=0.1)
+summary(tost)
 
 # Example 2: simultaneous 90\% confidence regions for bivariate data
 

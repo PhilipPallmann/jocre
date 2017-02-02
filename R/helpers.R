@@ -1,7 +1,14 @@
 print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
-  cat(paste("Parameter estimates and projected boundaries of the ", x$p, "-dimensional ", 100 * (1 - x$alpha),
-            "% simultaneous confidence region\n", sep=""))
+  if(x$method %in% c("expanded", "tost")){
+    
+    cat(paste("Parameter estimates and ", 100 * (1 - x$alpha), "% simultaneous confidence intervals:\n", sep=""))
+    
+  }else{
+    
+    cat(paste("Parameter estimates and projected boundaries of the ", x$p, "-dimensional ", 100 * (1 - x$alpha),
+              "% simultaneous confidence region:\n", sep=""))
+  }
   
   res <- cbind(round(x$est, digits), round(x$ci, digits))
   rownames(res) <- colnames(x$dat)
@@ -13,8 +20,15 @@ print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
 
 summary.JOC <- function(object, digits=max(3, getOption("digits") - 4), ...){
   
-  cat(paste("Parameter estimates and projected boundaries of the ", object$p, "-dimensional ", 100 * (1 - object$alpha),
-            "% simultaneous confidence region\n", sep=""))
+  if(object$method %in% c("expanded", "tost")){
+    
+    cat(paste("Parameter estimates and ", 100 * (1 - object$alpha), "% simultaneous confidence intervals:\n", sep=""))
+    
+  }else{
+    
+    cat(paste("Parameter estimates and projected boundaries of the ", object$p, "-dimensional ", 100 * (1 - object$alpha),
+              "% simultaneous confidence region:\n", sep=""))
+  }
   
   res <- cbind(round(object$est, digits), round(object$ci, digits))
   rownames(res) <- colnames(object$dat)
@@ -50,7 +64,7 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     points(x$cr, pch=20, col=col)
   }
   if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
-    polygon(x$cr[chull(x$cr), -3], col=col, border=col)
+    polygon(x$cr[chull(x$cr), -3], col=NULL, border=col)
   }
   if(x$method %in% c("expanded", "tost")){
     segments(x0=x$ci[1], x1=x$ci[3], y0=x$est[2], y1=x$est[2], lwd=2, col=col)
@@ -65,7 +79,7 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
 print.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
   cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - x$alpha),
-            "% simultaneous confidence region\n", sep=""))
+            "% simultaneous confidence region:\n", sep=""))
   
   res <- cbind(round(x$est, digits), round(x$ci, digits))
   colnames(res) <- c("Estimate", "Lower", "Upper")
@@ -77,7 +91,7 @@ print.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
 summary.JOCMV <- function(object, digits=max(3, getOption("digits") - 4), ...){
   
   cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - object$alpha),
-            "% simultaneous confidence region\n", sep=""))
+            "% simultaneous confidence region:\n", sep=""))
   
   res <- cbind(round(object$est, digits), round(object$ci, digits))
   colnames(res) <- c("Estimate", "Lower", "Upper")
@@ -113,7 +127,7 @@ plot.JOCMV <- function(x, axnames=NULL, main=NULL, xlim=NULL, ylim=NULL, col="bl
   par(mar=c(5, 5, 4, 2))
   plot(0, xlim=xlims, ylim=ylims, las=1, xlab=axisnames[1], ylab=axisnames[2],
        cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
-  polygon(x$cr[chull(x$cr[, ]), ], col=col, border=col)
+  polygon(x$cr[chull(x$cr[, ]), ], col=NULL, border=col)
   if(x$scale=="var"){
     points(x$est, x$s^2, pch=19, col="black")
   }else{
