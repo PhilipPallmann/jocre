@@ -68,6 +68,7 @@ Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for mu
 # Example 1: simultaneous 90\% confidence intervals for trivariate data
 
 trivar <- mvtnorm::rmvnorm(n=20, mean=rep(0.05, 3), sigma=diag(3) * 0.05)
+colnames(bivar) <- c("AUCinf", "AUCt", "Cmax")
 
 tost <- cset(dat=trivar, method="tost", alpha=0.1)
 summary(tost)
@@ -75,6 +76,7 @@ summary(tost)
 # Example 2: simultaneous 90\% confidence regions for bivariate data
 
 bivar <- mvtnorm::rmvnorm(n=100, mean=rep(0.05, 2), sigma=diag(2) * 0.05)
+colnames(bivar) <- c("AUC", "Cmax")
 
 hotelling <- cset(dat=bivar, method="hotelling", alpha=0.1)
 summary(hotelling)
