@@ -26,10 +26,29 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
   if(method=="emp.bayes"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    a <- (p - 2) * (df / (df + 2))
+    JSfactor <- (1 - (a * (poolvar/n)) / sum(est^2)) # or just poolvar???
+    
+    if(JSfactor < 0){
+      JSplus <- est
+    }else{
+      JSplus <- JSfactor * est
+    }
+    
+    cond <- (sum(est^2) / (poolvar/n)) < (p * qf(p=1 - alpha, df1=p, df2=df)) # or just poolvar???
+    
+    if(cond==TRUE){
+      vE2 <- (1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))) *
+        (p * qf(p=1 - alpha, df1=p, df2=df) - p * log(1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))))
+    }else{
+      vE2 <- (1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))) *
+        (p * qf(p=1 - alpha, df1=p, df2=df) - p * log(1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))))
+    }
+    
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -39,36 +58,93 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
       
       grid <- expand.grid(togrid)
       
-      a <- (p - 2) * (df / (df + 2))
-      JSfactor <- (1 - (a * (poolvar/n)) / sum(est^2)) # or just poolvar???
-      
-      if(JSfactor < 0){
-        JSplus <- est
-      }else{
-        JSplus <- JSfactor * est
-      }
-      
-      cond <- (sum(est^2) / (poolvar/n)) < (p * qf(p=1 - alpha, df1=p, df2=df)) # or just poolvar???
-      
-      if(cond==TRUE){
-        vE2 <- (1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))) *
-          (p * qf(p=1 - alpha, df1=p, df2=df) - p * log(1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))))
-      }else{
-        vE2 <- (1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))) *
-          (p * qf(p=1 - alpha, df1=p, df2=df) - p * log(1 - a/(p * qf(p=1 - alpha, df1=p, df2=df))))
-      }
-      
       findcr <- apply(grid, 1, function(x){
         theta <- matrix(x, p)
         sqrt(sum((theta - JSplus)^2)) < (sqrt(poolvar/n) * sqrt(vE2))
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
     }
+    
+    a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+    
+    stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+    
+    b <- a
+    b[, 1] <- b[, 1] - stepwidth
+    b[, 2] <- b[, 2] + stepwidth
+    
+    togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+    crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+    
+    for(i in 1:p){
+      
+      togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+      togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+      
+      if(p==2){
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i==2){
+          
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+          
+        }
+        
+      }else{
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i > 1 & i < p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+        }
+        
+        if(i==p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+        }
+        
+      }
+      
+      colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+      biglistA[[i]] <- as.matrix(biglistA[[i]])
+      biglistB[[i]] <- as.matrix(biglistB[[i]])
+      
+      findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        sqrt(sum((theta - JSplus)^2)) < (sqrt(poolvar/n) * sqrt(vE2))
+      })
+      
+      findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        sqrt(sum((theta - JSplus)^2)) < (sqrt(poolvar/n) * sqrt(vE2))
+      })
+      
+      crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+      crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+      ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+      
+    }
+    
+    ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+    
+    FinalA <- ldply(crFinalA, data.frame)
+    FinalB <- ldply(crFinalB, data.frame)
+    
+    colnames(crFinalX) <- colnames(FinalA)
+    
+    crFinal <- rbind(crFinalX, FinalA, FinalB)
     
   }
   
@@ -93,10 +169,12 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
   if(method=="hotelling"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    rhs <- qf(p=1 - alpha, df1=p, df2=df - p + 1) * p * df / (df - p + 1)
+    
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -106,29 +184,103 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
       
       grid <- expand.grid(togrid)
       
-      rhs <- qf(p=1 - alpha, df1=p, df2=df - p + 1) * p * df / (df - p + 1)
-      
       findcr <- apply(grid, 1, function(x){
         theta <- matrix(x, p)
         (n * t(est - theta) %*% solved %*% (est - theta)) < rhs 
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
     }
+    
+    a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+    
+    stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+    
+    b <- a
+    b[, 1] <- b[, 1] - stepwidth
+    b[, 2] <- b[, 2] + stepwidth
+    
+    togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+    crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+    
+    for(i in 1:p){
+      
+      togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+      togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+      
+      if(p==2){
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i==2){
+          
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+          
+        }
+        
+      }else{
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i > 1 & i < p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+        }
+        
+        if(i==p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+        }
+        
+      }
+      
+      colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+      biglistA[[i]] <- as.matrix(biglistA[[i]])
+      biglistB[[i]] <- as.matrix(biglistB[[i]])
+      
+      findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        (n * t(est - theta) %*% solved %*% (est - theta)) < rhs 
+      })
+      
+      findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        (n * t(est - theta) %*% solved %*% (est - theta)) < rhs 
+      })
+      
+      crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+      crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+      ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+      
+    }
+    
+    ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+    
+    FinalA <- ldply(crFinalA, data.frame)
+    FinalB <- ldply(crFinalB, data.frame)
+    
+    colnames(crFinalX) <- colnames(FinalA)
+    
+    crFinal <- rbind(crFinalX, FinalA, FinalB)
     
   }
   
   if(method=="limacon.asy"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -144,22 +296,100 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
           (sqrt(t(theta) %*% solved %*% theta) * sqrt(n)) 
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
     }
+    
+    a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+    
+    stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+    
+    b <- a
+    b[, 1] <- b[, 1] - stepwidth
+    b[, 2] <- b[, 2] + stepwidth
+    
+    togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+    crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+    
+    for(i in 1:p){
+      
+      togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+      togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+      
+      if(p==2){
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i==2){
+          
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+          
+        }
+        
+      }else{
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i > 1 & i < p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+        }
+        
+        if(i==p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+        }
+        
+      }
+      
+      colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+      biglistA[[i]] <- as.matrix(biglistA[[i]])
+      biglistB[[i]] <- as.matrix(biglistB[[i]])
+      
+      findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        ((t(theta) %*% solved %*% est) / sqrt(t(theta) %*% solved %*% theta) * sqrt(n) + qnorm(1 - alpha)) >
+          (sqrt(t(theta) %*% solved %*% theta) * sqrt(n)) 
+      })
+      
+      findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        ((t(theta) %*% solved %*% est) / sqrt(t(theta) %*% solved %*% theta) * sqrt(n) + qnorm(1 - alpha)) >
+          (sqrt(t(theta) %*% solved %*% theta) * sqrt(n)) 
+      })
+      
+      crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+      crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+      ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+      
+    }
+    
+    ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+    
+    FinalA <- ldply(crFinalA, data.frame)
+    FinalB <- ldply(crFinalB, data.frame)
+    
+    colnames(crFinalX) <- colnames(FinalA)
+    
+    crFinal <- rbind(crFinalX, FinalA, FinalB)
     
   }
   
   if(method=="limacon.fin"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -175,22 +405,102 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
           ((t(theta) %*% theta) / sqrt((t(theta) %*% cov %*% theta) / n))
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
     }
+    
+    a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+    
+    stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+    
+    b <- a
+    b[, 1] <- b[, 1] - stepwidth
+    b[, 2] <- b[, 2] + stepwidth
+    
+    togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+    crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+    
+    for(i in 1:p){
+      
+      togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+      togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+      
+      if(p==2){
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i==2){
+          
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+          
+        }
+        
+      }else{
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i > 1 & i < p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+        }
+        
+        if(i==p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+        }
+        
+      }
+      
+      colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+      biglistA[[i]] <- as.matrix(biglistA[[i]])
+      biglistB[[i]] <- as.matrix(biglistB[[i]])
+      
+      findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        ((t(theta) %*% est) / sqrt((t(theta) %*% cov %*% theta) / n) + qt(1 - alpha, df)) >
+          ((t(theta) %*% theta) / sqrt((t(theta) %*% cov %*% theta) / n))
+      })
+      
+      findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+        theta <- matrix(x, p)
+        ((t(theta) %*% est) / sqrt((t(theta) %*% cov %*% theta) / n) + qt(1 - alpha, df)) >
+          ((t(theta) %*% theta) / sqrt((t(theta) %*% cov %*% theta) / n))
+      })
+      
+      crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+      crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+      ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+      
+    }
+    
+    ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+    
+    FinalA <- ldply(crFinalA, data.frame)
+    FinalB <- ldply(crFinalB, data.frame)
+    
+    colnames(crFinalX) <- colnames(FinalA)
+    
+    crFinal <- rbind(crFinalX, FinalA, FinalB)
     
   }
   
   if(method=="standard.cor"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    rhs <- (p / (n - 1) * qf(p=1 - alpha, df1=p, df2=df))
+    
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -202,25 +512,103 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
       
       findcr <- apply(grid, 1, function(x){
         theta <- x
-        t(est - theta) %*% solved %*% (est - theta) < (p / (n - 1) * qf(p=1 - alpha, df1=p, df2=df))
+        t(est - theta) %*% solved %*% (est - theta) < rhs
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
     }
+    
+    a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+    
+    stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+    
+    b <- a
+    b[, 1] <- b[, 1] - stepwidth
+    b[, 2] <- b[, 2] + stepwidth
+    
+    togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+    crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+    
+    for(i in 1:p){
+      
+      togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+      togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+      
+      if(p==2){
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i==2){
+          
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+          
+        }
+        
+      }else{
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i > 1 & i < p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+        }
+        
+        if(i==p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+        }
+        
+      }
+      
+      colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+      biglistA[[i]] <- as.matrix(biglistA[[i]])
+      biglistB[[i]] <- as.matrix(biglistB[[i]])
+      
+      findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+        theta <- x
+        t(est - theta) %*% solved %*% (est - theta) < rhs
+      })
+      
+      findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+        theta <- x
+        t(est - theta) %*% solved %*% (est - theta) < rhs
+      })
+      
+      crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+      crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+      ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+      
+    }
+    
+    ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+    
+    FinalA <- ldply(crFinalA, data.frame)
+    FinalB <- ldply(crFinalB, data.frame)
+    
+    colnames(crFinalX) <- colnames(FinalA)
+    
+    crFinal <- rbind(crFinalX, FinalA, FinalB)
     
   }
   
   if(method=="standard.ind"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    rhs <- (poolvar/n * p * qf(p=1 - alpha, df1=p, df2=df))
+    
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -232,15 +620,91 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
       
       findcr <- apply(grid, 1, function(x){
         theta <- x
-        sqrt(sum((est - theta)^2))^2 < (poolvar/n * p * qf(p=1 - alpha, df1=p, df2=df))
+        sqrt(sum((est - theta)^2))^2 < rhs
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
     }
+    
+    a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+    
+    stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+    
+    b <- a
+    b[, 1] <- b[, 1] - stepwidth
+    b[, 2] <- b[, 2] + stepwidth
+    
+    togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+    crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+    
+    for(i in 1:p){
+      
+      togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+      togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+      
+      if(p==2){
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i==2){
+          
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+          
+        }
+        
+      }else{
+        
+        biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+        biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+        
+        if(i > 1 & i < p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+        }
+        
+        if(i==p){
+          biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+          biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+        }
+        
+      }
+      
+      colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+      biglistA[[i]] <- as.matrix(biglistA[[i]])
+      biglistB[[i]] <- as.matrix(biglistB[[i]])
+      
+      findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+        theta <- x
+        sqrt(sum((est - theta)^2))^2 < rhs
+      })
+      
+      findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+        theta <- x
+        sqrt(sum((est - theta)^2))^2 < rhs
+      })
+      
+      crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+      crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+      ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+      
+    }
+    
+    ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+    
+    FinalA <- ldply(crFinalA, data.frame)
+    FinalB <- ldply(crFinalB, data.frame)
+    
+    colnames(crFinalX) <- colnames(FinalA)
+    
+    crFinal <- rbind(crFinalX, FinalA, FinalB)
     
   }
   
@@ -256,10 +720,10 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
   if(method=="tseng"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -276,20 +740,104 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
         lhs > qf(p=alpha, df1=p, df2=df, ncp=(sqrt(sum(theta^2))^2 / (poolvar/n)))
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
       
-      if(nrow(crFinal)==0){
+      if(nrow(crFinalX)==0){
         ciFinal <- matrix(rep(Inf, 2 * p), 2)
+        crFinal <- crFinalX
+        problem <- TRUE
         break
       }
       
-      if(ciFinal[1, 1]==Inf | ciFinal[1, 1]==-Inf){
+      if(ciFinalX[1, 1]==Inf | ciFinal[1, 1]==-Inf){
         ciFinal <- matrix(rep(0, 2 * p), 2)
+        crFinal <- crFinalX
+        problem <- TRUE
         break
       }
+      
+    }
+    
+    if(problem!=TRUE){
+      
+      a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+      
+      stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+      
+      b <- a
+      b[, 1] <- b[, 1] - stepwidth
+      b[, 2] <- b[, 2] + stepwidth
+      
+      togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+      crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+      
+      for(i in 1:p){
+        
+        togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+        togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+        
+        if(p==2){
+          
+          biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+          biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+          
+          if(i==2){
+            
+            biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+            biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+            
+          }
+          
+        }else{
+          
+          biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+          biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+          
+          if(i > 1 & i < p){
+            biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+            biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+          }
+          
+          if(i==p){
+            biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+            biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+          }
+          
+        }
+        
+        colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+        biglistA[[i]] <- as.matrix(biglistA[[i]])
+        biglistB[[i]] <- as.matrix(biglistB[[i]])
+        
+        findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+          theta <- x
+          lhs > qf(p=alpha, df1=p, df2=df, ncp=(sqrt(sum(theta^2))^2 / (poolvar/n)))
+        })
+        
+        findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+          theta <- x
+          lhs > qf(p=alpha, df1=p, df2=df, ncp=(sqrt(sum(theta^2))^2 / (poolvar/n)))
+        })
+        
+        crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+        crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+        
+        ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+        ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+        
+      }
+      
+      ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+      
+      FinalA <- ldply(crFinalA, data.frame)
+      FinalB <- ldply(crFinalB, data.frame)
+      
+      colnames(crFinalX) <- colnames(FinalA)
+      
+      crFinal <- rbind(crFinalX, FinalA, FinalB)
       
     }
     
@@ -298,10 +846,10 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
   if(method=="tseng.brown"){
     
     searchwidth <- 1
-    ciFinal <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
+    ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
-    while(min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinal[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+    while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
+            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -317,20 +865,106 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
           qchisq(p=alpha, df=2, ncp=((sqrt(sum(theta^2))^2) * (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))^2))
       })
       
-      crFinal <- cbind(grid, findcr)[findcr==1, ]
-      ciFinal <- t(apply(crFinal[, -(p + 1)], 2, range, na.rm=TRUE))
+      crFinalX <- cbind(grid, findcr)[findcr==1, ]
+      ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
-            
-      if(nrow(crFinal)==0){
+      
+      if(nrow(crFinalX)==0){
         ciFinal <- matrix(rep(Inf, 2 * p), 2)
+        crFinal <- crFinalX
+        problem <- TRUE
         break
       }
       
-      if(ciFinal[1, 1]==Inf | ciFinal[1, 1]==-Inf){
+      if(ciFinalX[1, 1]==Inf | ciFinalX[1, 1]==-Inf){
         ciFinal <- matrix(rep(0, 2 * p), 2)
+        crFinal <- crFinalX
+        problem <- TRUE
         break
       }
+      
+    }
+    
+    if(problem!=TRUE){
+      
+      a <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
+      
+      stepwidth <- diff(range(grid[, 1]))/steps # same for all variables
+      
+      b <- a
+      b[, 1] <- b[, 1] - stepwidth
+      b[, 2] <- b[, 2] + stepwidth
+      
+      togridA <- togridB <- biglistA <- biglistB <- findcrA <- findcrB <- list()
+      crFinalA <- crFinalB <- ciFinalA <- ciFinalB <- list()
+      
+      for(i in 1:p){
+        
+        togridA[[i]] <- seq(a[i, 1], b[i, 1], length.out=steps)
+        togridB[[i]] <- seq(a[i, 2], b[i, 2], length.out=steps)
+        
+        if(p==2){
+          
+          biglistA[[i]] <- expand.grid(c(list(togridA[[i]], crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+          biglistB[[i]] <- expand.grid(c(list(togridB[[i]], crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+          
+          if(i==2){
+            
+            biglistA[[i]] <- cbind(biglistA[[i]][, 2], biglistA[[i]][, 1])
+            biglistB[[i]] <- cbind(biglistB[[i]][, 2], biglistB[[i]][, 1])
+            
+          }
+          
+        }else{
+          
+          biglistA[[i]] <- expand.grid(c(list(togridA[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 1], ][, -c(i, p + 1)])))
+          biglistB[[i]] <- expand.grid(c(list(togridB[[i]]), as.list(crFinalX[crFinalX[, i]==a[i, 2], ][, -c(i, p + 1)])))
+          
+          if(i > 1 & i < p){
+            biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1], biglistA[[i]][, (i + 1):p])
+            biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1], biglistB[[i]][, (i + 1):p])
+          }
+          
+          if(i==p){
+            biglistA[[i]] <- cbind(biglistA[[i]][, 2:i], biglistA[[i]][, 1])
+            biglistB[[i]] <- cbind(biglistB[[i]][, 2:i], biglistB[[i]][, 1])
+          }
+          
+        }
+        
+        colnames(biglistA[[i]]) <- colnames(biglistB[[i]]) <- 1:p
+        biglistA[[i]] <- as.matrix(biglistA[[i]])
+        biglistB[[i]] <- as.matrix(biglistB[[i]])
+        
+        findcrA[[i]] <- apply(biglistA[[i]], 1, function(x){
+          theta <- x
+          (sqrt(sum((est - theta * (1 + (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))))^2))^2) <
+            qchisq(p=alpha, df=2, ncp=((sqrt(sum(theta^2))^2) * (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))^2))
+        })
+        
+        findcrB[[i]] <- apply(biglistB[[i]], 1, function(x){
+          theta <- x
+          (sqrt(sum((est - theta * (1 + (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))))^2))^2) <
+            qchisq(p=alpha, df=2, ncp=((sqrt(sum(theta^2))^2) * (1/(TsengBrownA + TsengBrownB * (sqrt(sum(theta^2))^2)))^2))
+        })
+        
+        crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
+        crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+        
+        ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
+        ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
+        
+      }
+      
+      ciFinal <- matrix(unlist(c(ciFinalA, ciFinalB)), nrow=p)
+      
+      FinalA <- ldply(crFinalA, data.frame)
+      FinalB <- ldply(crFinalB, data.frame)
+      
+      colnames(crFinalX) <- colnames(FinalA)
+      
+      crFinal <- rbind(crFinalX, FinalA, FinalB)
       
     }
     
