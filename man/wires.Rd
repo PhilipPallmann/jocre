@@ -37,9 +37,9 @@ Wayne B. Nelson (1982) Applied Life Data Analysis. Wiley, Hoboken, NJ.
 \examples{
 data(wires)
 
-# Simultaneous confidence regions for the mean and variance
-plotMV2D(wires$Strength, method="mood", main="Mood")
-plotMV2D(wires$Strength, method="lrt", main="LRT")
+# Simultaneous 90\% confidence regions for the mean and variance
+plot(csetMV(wires$Strength, method="mood"), main="Mood")
+plot(csetMV(wires$Strength, method="lrt"), main="LRT")
 }
 
 \keyword{datasets}

@@ -37,7 +37,7 @@ Antonio Marzo, Lorenzo Dal Bo, Antonio Rusca, Pierangelo Zini (2002) Bioequivale
 }
 
 \references{
-Philip Pallmann & Thomas Jaki (2016) Simultaneous confidence regions and intervals for multivariate bioequivalence. Submitted to Statistics in Medicine.
+Philip Pallmann & Thomas Jaki (2017) Simultaneous confidence regions and intervals for multivariate bioequivalence. Submitted to Statistics in Medicine.
 }
 
 \examples{
@@ -56,7 +56,7 @@ sd(marzo$deltalogCmax) / sqrt(nrow(marzo))
 t.test(x=marzo$deltalogCmax, alternative="less", mu=log(1.25))$p.value
 t.test(x=marzo$deltalogCmax, alternative="greater", mu=log(0.80))$p.value
 
-# 90% confidence interval
+# 90\% TOST confidence interval
 t.test(x=marzo$deltalogCmax, conf.level=0.9)$conf.int[1:2]
 }
 
