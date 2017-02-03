@@ -1,4 +1,4 @@
-cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1){
+cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=1){
   
   Var1 <- Var2 <- NULL # just to appease RCMD check
   
@@ -16,6 +16,15 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
   method <- match.arg(method, choices=c("bootkern", "emp.bayes", "expanded", "fixseq", "hotelling",
                                         "limacon.asy", "limacon.fin", "standard.cor", "standard.ind",
                                         "tost", "tseng", "tseng.brown"))
+  
+  if(is.null(steps)==TRUE){
+    if(p==2){
+      steps <- 300
+    }
+    if(p > 2){
+      steps <- 50
+    }
+  }
   
   if(method=="bootkern"){
     
@@ -973,6 +982,7 @@ cset <- function(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1
   Out <- list()
   
   if(p==2){
+    colnames(crFinal) <- c("Var1", "Var2")
     Out$cr <- rbind(ddply(crFinal, .(Var1), summarise, Var2=range(Var2)),
                     ddply(crFinal, .(Var2), summarise, Var1=range(Var1)))
   }

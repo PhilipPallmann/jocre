@@ -6,13 +6,13 @@
 
 \description{Computes boundaries of (simultaneous) confidence regions and intervals around multivariate normal means using different methods.}
 
-\usage{cset(dat, method, alpha=0.1, steps=300, TsengBrownA=1, TsengBrownB=1)}
+\usage{cset(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=1)}
 
 \arguments{
   \item{dat}{A matrix or data.frame with independent units in rows and multivariate outcomes in columns.}
   \item{method}{A character string specifying the method to be used. See details for available \code{method}s.}
   \item{alpha}{A numeric value giving the type I error level to be controlled. Default is \code{0.1}.}
-  \item{steps}{An integer setting the initial number of steps for the search algorithm.}
+  \item{steps}{An integer setting the initial number of steps for the search algorithm. Default is \code{NULL}, which chooses 300 for two-dimensional and 50 for higher-dimensional problems.}
   \item{TsengBrownA}{A numeric giving the parameter A to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
   \item{TsengBrownB}{A numeric giving the parameter B to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
 }
@@ -68,14 +68,14 @@ Weizhen Wang, J. T. Gene Hwang, Anirban DasGupta (1999) Statistical tests for mu
 # Example 1: simultaneous 90\% confidence intervals for trivariate data
 
 trivar <- mvtnorm::rmvnorm(n=20, mean=rep(0.05, 3), sigma=diag(3) * 0.05)
-colnames(bivar) <- c("AUCinf", "AUCt", "Cmax")
+colnames(trivar) <- c("AUCinf", "AUCt", "Cmax")
 
 tost <- cset(dat=trivar, method="tost", alpha=0.1)
 summary(tost)
 
 # Example 2: simultaneous 90\% confidence regions for bivariate data
 
-bivar <- mvtnorm::rmvnorm(n=100, mean=rep(0.05, 2), sigma=diag(2) * 0.05)
+bivar <- mvtnorm::rmvnorm(n=20, mean=rep(0.05, 2), sigma=diag(2) * 0.05)
 colnames(bivar) <- c("AUC", "Cmax")
 
 hotelling <- cset(dat=bivar, method="hotelling", alpha=0.1)
