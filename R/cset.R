@@ -754,6 +754,8 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       
       searchwidth <- 2 * searchwidth
       
+      problem <- FALSE
+      
       if(nrow(crFinalX)==0){
         ciFinal <- matrix(rep(Inf, 2 * p), 2)
         crFinal <- crFinalX
@@ -761,7 +763,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
         break
       }
       
-      if(ciFinalX[1, 1]==Inf | ciFinal[1, 1]==-Inf){
+      if(ciFinalX[1, 1]==Inf | ciFinalX[1, 1]==-Inf){
         ciFinal <- matrix(rep(0, 2 * p), 2)
         crFinal <- crFinalX
         problem <- TRUE
@@ -878,6 +880,8 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       ciFinalX <- t(apply(crFinalX[, -(p + 1)], 2, range, na.rm=TRUE))
       
       searchwidth <- 2 * searchwidth
+      
+      problem <- FALSE
       
       if(nrow(crFinalX)==0){
         ciFinal <- matrix(rep(Inf, 2 * p), 2)
