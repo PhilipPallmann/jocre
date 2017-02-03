@@ -141,6 +141,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
       crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
       
+      if(is.matrix(crFinalA[[i]])==FALSE){
+        crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+      }
+      
+      if(is.matrix(crFinalB[[i]])==FALSE){
+        crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+      }
+      
       ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
       ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
       
@@ -267,6 +275,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
       crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
       
+      if(is.matrix(crFinalA[[i]])==FALSE){
+        crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+      }
+      
+      if(is.matrix(crFinalB[[i]])==FALSE){
+        crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+      }
+      
       ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
       ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
       
@@ -375,6 +391,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       
       crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
       crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      if(is.matrix(crFinalA[[i]])==FALSE){
+        crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+      }
+      
+      if(is.matrix(crFinalB[[i]])==FALSE){
+        crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+      }
       
       ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
       ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
@@ -485,6 +509,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
       crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
       
+      if(is.matrix(crFinalA[[i]])==FALSE){
+        crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+      }
+      
+      if(is.matrix(crFinalB[[i]])==FALSE){
+        crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+      }
+      
       ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
       ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
       
@@ -593,6 +625,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
       crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
       
+      if(is.matrix(crFinalA[[i]])==FALSE){
+        crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+      }
+      
+      if(is.matrix(crFinalB[[i]])==FALSE){
+        crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+      }
+      
       ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
       ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
       
@@ -700,6 +740,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
       
       crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
       crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+      
+      if(is.matrix(crFinalA[[i]])==FALSE){
+        crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+      }
+      
+      if(is.matrix(crFinalB[[i]])==FALSE){
+        crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+      }
       
       ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
       ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
@@ -836,6 +884,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
         crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
         crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
         
+        if(is.matrix(crFinalA[[i]])==FALSE){
+          crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+        }
+        
+        if(is.matrix(crFinalB[[i]])==FALSE){
+          crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+        }
+        
         ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
         ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
         
@@ -964,6 +1020,14 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
         
         crFinalA[[i]] <- cbind(biglistA[[i]], findcrA[[i]])[findcrA[[i]]==1, ]
         crFinalB[[i]] <- cbind(biglistB[[i]], findcrB[[i]])[findcrB[[i]]==1, ]
+        
+        if(is.matrix(crFinalA[[i]])==FALSE){
+          crFinalA[[i]] <- rbind(crFinalA[[i]], crFinalA[[i]])
+        }
+        
+        if(is.matrix(crFinalB[[i]])==FALSE){
+          crFinalB[[i]] <- rbind(crFinalB[[i]], crFinalB[[i]])
+        }
         
         ciFinalA[[i]] <- t(apply(crFinalA[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 1]
         ciFinalB[[i]] <- t(apply(crFinalB[[i]][, -(p + 1)], 2, range, na.rm=TRUE))[i, 2]
