@@ -1049,7 +1049,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
   
   Out <- list()
   
-  if(p==2){
+  if(p==2 & is.null(crFinal)==FALSE){
     colnames(crFinal) <- c("Var1", "Var2")
     Out$cr <- rbind(ddply(crFinal, .(Var1), summarise, Var2=range(Var2)),
                     ddply(crFinal, .(Var2), summarise, Var1=range(Var1)))
