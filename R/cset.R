@@ -57,7 +57,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     }
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -230,7 +230,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     rhs <- qf(p=1 - alpha, df1=p, df2=df - p + 1) * p * df / (df - p + 1)
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -344,7 +344,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -461,7 +461,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -580,7 +580,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     rhs <- (p / (n - 1) * qf(p=1 - alpha, df1=p, df2=df))
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -696,7 +696,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     rhs <- (poolvar/n * p * qf(p=1 - alpha, df1=p, df2=df))
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -819,7 +819,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
@@ -955,7 +955,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     ciFinalX <- cbind(est - searchwidth/2 * poolvar, est + searchwidth/2 * poolvar)
     
     while(min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001 | 
-            min(abs(ciFinalX[, 1] - (est - searchwidth/2 * poolvar))) < 0.001){
+            min(abs(ciFinalX[, 2] - (est + searchwidth/2 * poolvar))) < 0.001){
       
       togrid <- list()
       
