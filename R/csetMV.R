@@ -1,4 +1,4 @@
-csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=400){
+csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
   
   Var1 <- Var2 <- NULL # just to appease RCMD check
   
