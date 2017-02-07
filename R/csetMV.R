@@ -94,8 +94,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       
       Msteps <- Vsteps <- steps
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5){
+      while((nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5) & Msteps < 2001){
         
         Msteps <- 2 * Msteps
         
@@ -115,7 +115,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       }
       
       while((nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 10000){
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 2001){
         
         Vsteps <- 2 * Vsteps
         
@@ -165,8 +165,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       
       Msteps <- Vsteps <- steps
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5){
+      while((nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5) & Msteps < 2001){
         
         Msteps <- 2 * Msteps
         
@@ -236,8 +236,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       
       Msteps <- Vsteps <- steps
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5){
+      while((nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5) & Msteps < 2001){
         
         Msteps <- 2 * Msteps
         
@@ -307,8 +307,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       
       Msteps <- Vsteps <- steps
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5){
+      while((nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 5 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 5) & Msteps < 2001){
         
         Msteps <- 2 * Msteps
         
