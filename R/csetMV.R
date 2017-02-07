@@ -1,4 +1,4 @@
-csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
+csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
   
   Var1 <- Var2 <- NULL # just to appease RCMD check
   
@@ -63,6 +63,28 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
         
       }
       
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
+        
+        steps <- 2 * steps
+        
+      }
+          
     }
     
     if(method=="large"){
@@ -89,6 +111,28 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
         
         searchwidth <- searchwidth + 1
+        
+      }
+      
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
+        
+        steps <- 2 * steps
         
       }
       
@@ -121,6 +165,28 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
         
       }
       
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
+        
+        steps <- 2 * steps
+        
+      }
+      
     }
     
     if(method=="pluginF"){
@@ -150,6 +216,28 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
         
       }
       
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
+        
+        steps <- 2 * steps
+        
+      }
+      
     }
     
     if(method=="lrt"){
@@ -176,6 +264,28 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=800){
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
         
         searchwidth <- searchwidth + 1
+        
+      }
+      
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+        
+        togrid <- list()
+        togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
+                           mea + searchwidth * qnorm(1 - alpha/16) * s / sqrt(n), length.out=steps)
+        togrid[[2]] <- seq(s^2 * 1/searchwidth * n / qchisq(df=df, 1 - alpha/16),
+                           s^2 * searchwidth * n / qchisq(df=df, alpha/16), length.out=steps)
+        
+        grid <- expand.grid(togrid)
+        
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        
+        crFinal <- grid[grid[, 3]==TRUE, ]
+        ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
+        
+        steps <- 2 * steps
         
       }
       

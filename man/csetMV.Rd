@@ -6,7 +6,7 @@
 
 \description{Computes boundaries of (simultaneous) confidence regions for the mean and variance of a normal distribution using different methods.}
 
-\usage{csetMV(dat, n, method, alpha=0.1, scale="var", steps=800)}
+\usage{csetMV(dat, n, method, alpha=0.1, scale="var", steps=500)}
 
 \arguments{
   \item{dat}{A vector of numeric values assumed to follow a normal distribution. Not required for \code{method="cheng.iles"} or \code{"min.area"}.}
