@@ -35,11 +35,13 @@ Wayne B. Nelson (1982) Applied Life Data Analysis. Wiley, Hoboken, NJ.
 }
 
 \examples{
+\dontrun{
 data(wires)
 
 # Simultaneous 90\% confidence regions for the mean and variance
 plot(csetMV(wires$Strength, method="mood"), main="Mood")
 plot(csetMV(wires$Strength, method="lrt"), main="LRT")
+}
 }
 
 \keyword{datasets}

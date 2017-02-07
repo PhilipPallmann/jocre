@@ -38,9 +38,11 @@ Philip Pallmann (2017) Joint confidence regions with the R package jocre. In pre
 \keyword{package}
 
 \examples{
+\dontrun{
 data("marzo")
-#plot(cset(dat=marzo, method="limacon"))
+plot(cset(dat=marzo, method="limacon"))
 
 data("wires")
-#plot(csetMV(dat=wires, method="mood"))
+plot(csetMV(dat=wires, method="mood"))
+}
 }
