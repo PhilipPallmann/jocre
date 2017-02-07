@@ -6,6 +6,13 @@ Please report bugs or unexpected behaviour to Philip Pallmann <p.pallmann@lancas
 
 ##########################
 
+Version 0.3.1 (7 February 2017)
+
+- Added fixed sequence procedure.
+- Various minor bug fixes.
+
+##########################
+
 Version 0.3 (3 February 2017)
 
 - New main functions cset() and csetMV() with corresponding S3 methods plot(), print(), and summary()

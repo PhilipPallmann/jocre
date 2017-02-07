@@ -1,12 +1,12 @@
 print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
-  if(x$method %in% c("expanded", "tost")){
+  if(x$method %in% c("expanded", "fixseq", "tost")){
     
     cat(paste("Parameter estimates and ", 100 * (1 - x$alpha), "% simultaneous confidence intervals:\n\n", sep=""))
     
   }else{
     
-    cat(paste("Parameter estimates and projected boundaries of the ", x$p, "-dimensional ", 100 * (1 - x$alpha),
+    cat(paste("Parameter estimates and projected boundaries of the ", x$p, "-dimensional\n", 100 * (1 - x$alpha),
               "% simultaneous confidence region:\n\n", sep=""))
   }
   
@@ -20,13 +20,13 @@ print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
 
 summary.JOC <- function(object, digits=max(3, getOption("digits") - 4), ...){
   
-  if(object$method %in% c("expanded", "tost")){
+  if(object$method %in% c("expanded", "fixseq", "tost")){
     
     cat(paste("Parameter estimates and ", 100 * (1 - object$alpha), "% simultaneous confidence intervals:\n\n", sep=""))
     
   }else{
     
-    cat(paste("Parameter estimates and projected boundaries of the ", object$p, "-dimensional ", 100 * (1 - object$alpha),
+    cat(paste("Parameter estimates and projected boundaries of the ", object$p, "-dimensional\n", 100 * (1 - object$alpha),
               "% simultaneous confidence region:\n\n", sep=""))
   }
   
@@ -66,7 +66,7 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
   if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
     polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)
   }
-  if(x$method %in% c("expanded", "tost")){
+  if(x$method %in% c("expanded", "fixseq", "tost")){
     segments(x0=x$ci[1], x1=x$ci[3], y0=x$est[2], y1=x$est[2], lwd=2, col=col)
     segments(y0=x$ci[2], y1=x$ci[4], x0=x$est[1], x1=x$est[1], lwd=2, col=col)
   }
@@ -78,7 +78,7 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
 
 print.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
-  cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - x$alpha),
+  cat(paste("Parameter estimate and projected boundaries of the 2-dimensional\n", 100 * (1 - x$alpha),
             "% simultaneous confidence region:\n\n", sep=""))
   
   res <- cbind(round(x$est, digits), round(x$ci, digits))
@@ -90,7 +90,7 @@ print.JOCMV <- function(x, digits=max(3, getOption("digits") - 4), ...){
 
 summary.JOCMV <- function(object, digits=max(3, getOption("digits") - 4), ...){
   
-  cat(paste("Parameter estimate and projected boundaries of the 2-dimensional ", 100 * (1 - object$alpha),
+  cat(paste("Parameter estimate and projected boundaries of the 2-dimensional\n", 100 * (1 - object$alpha),
             "% simultaneous confidence region:\n\n", sep=""))
   
   res <- cbind(round(object$est, digits), round(object$ci, digits))

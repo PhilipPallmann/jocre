@@ -4,7 +4,7 @@ citEntry(entry = "Manual",
          title = "jocre: Joint confidence regions",
          author = personList(person(given="Philip", family="Pallmann")),
          year = "2017",
-         note = "R package version 0.3",
+         note = "R package version 0.3.1",
          url = "https://github.com/PhilipPallmann/jocre",
          textVersion = paste("Philip Pallmann (2017) jocre: Joint confidence regions. R package version 0.3. https://github.com/PhilipPallmann/jocre")
          )
