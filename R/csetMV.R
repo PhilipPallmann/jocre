@@ -67,7 +67,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
     
     if(method=="large"){
       
-      grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+      rhs <- qchisq(1 - alpha, df=2)
+      grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < rhs
       
       crFinal <- grid[grid[, 3]==TRUE, ]
       ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -107,7 +108,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -127,7 +128,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        grid[, 3] <- n/grid[, 2] * (mea - grid[, 1])^2 + n/(2 * grid[, 2]^2) * (s^2 - grid[, 2])^2 < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -138,7 +139,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
     
     if(method=="plugin"){
       
-      grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+      rhs <- qchisq(1 - alpha, df=2)
+      grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < rhs
       
       crFinal <- grid[grid[, 3]==TRUE, ]
       ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -178,7 +180,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -186,7 +188,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       }
       
       while((nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 10000){
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 2001){
         
         Vsteps <- 2 * Vsteps
         
@@ -198,7 +200,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qchisq(1 - alpha, df=2)
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -209,7 +211,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
     
     if(method=="pluginF"){
       
-      grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qf(1 - alpha, df1=2, df2=n - 2)
+      rhs <- qf(1 - alpha, df1=2, df2=n - 2)
+      grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < rhs
       
       crFinal <- grid[grid[, 3]==TRUE, ]
       ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -249,7 +252,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qf(1 - alpha, df1=2, df2=n - 2)
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -257,7 +260,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       }
       
       while((nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 10000){
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 2001){
         
         Vsteps <- 2 * Vsteps
         
@@ -269,7 +272,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < qf(1 - alpha, df1=2, df2=n - 2)
+        grid[, 3] <- n/s^2 * (mea - grid[, 1])^2 + n/(2 * s^4) * (s^2 - grid[, 2])^2 < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -280,7 +283,8 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
     
     if(method=="lrt"){
       
-      grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < qchisq(1 - alpha, df=2)
+      rhs <- qchisq(1 - alpha, df=2)
+      grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < rhs
       
       crFinal <- grid[grid[, 3]==TRUE, ]
       ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -296,7 +300,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < qchisq(1 - alpha, df=2)
+        grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
@@ -328,7 +332,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
       }
       
       while((nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 10000){
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10) & Vsteps < 2001){
         
         Vsteps <- 2 * Vsteps
         
@@ -340,7 +344,7 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
         grid <- expand.grid(togrid)
         
-        grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < qchisq(1 - alpha, df=2)
+        grid[, 3] <- n * log(grid[, 2] / s^2) + n * s^2 / grid[, 2] + n * (mea - grid[, 1])^2 / grid[, 2] - n < rhs
         
         crFinal <- grid[grid[, 3]==TRUE, ]
         ciFinal <- t(apply(crFinal[, -3], 2, range, na.rm=TRUE))
