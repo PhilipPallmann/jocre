@@ -92,10 +92,10 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
       }
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10){
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
@@ -143,10 +143,10 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
       }
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10){
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
@@ -194,10 +194,10 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
       }
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10){
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
@@ -245,10 +245,10 @@ csetMV <- function(dat, n, method, alpha=0.1, scale="var", steps=500){
         
       }
       
-      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 3 |
-              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 3){
+      while(nrow(crFinal[crFinal$Var1==min(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var1==max(crFinal$Var1), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==min(crFinal$Var2), ]) > 10 |
+              nrow(crFinal[crFinal$Var2==max(crFinal$Var2), ]) > 10){
         
         togrid <- list()
         togrid[[1]] <- seq(mea - searchwidth * qnorm(1 - alpha/16) * s / sqrt(n),
