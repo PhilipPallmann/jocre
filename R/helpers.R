@@ -39,7 +39,7 @@ summary.JOC <- function(object, digits=max(3, getOption("digits") - 4), ...){
 }
 
 plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=log(c(0.77, 1.3)),
-                     ylim=log(c(0.77, 1.3)), col="black", ...){
+                     ylim=log(c(0.77, 1.3)), col="black", convexify=FALSE, ...){
   
   if(nrow(x$ci)!=2){
     stop("Plotting only allowed for regions or intervals in 2 dimensions.")
@@ -60,8 +60,15 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
     }
     rect(equi[1], equi[1], equi[2], equi[2], col="gray95", border=NA)
   }
-  if(x$method %in% c("limacon.asy", "limacon.fin", "tseng", "tseng.brown")){
+  if(x$method %in% c("tseng", "tseng.brown")){
     points(x$cr, pch=20, col=col, cex=0.5)
+  }
+  if(x$method %in% c("limacon.asy", "limacon.fin")){
+    if(convexify==FALSE){
+      points(x$cr, pch=20, col=col, cex=0.5)
+    }else{
+      polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)
+    }
   }
   if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind")){
     polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)

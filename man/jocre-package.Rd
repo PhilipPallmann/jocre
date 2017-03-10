@@ -16,8 +16,8 @@ This package provides functions for computing and plotting joint confidence regi
 \tabular{ll}{
 Package: \tab jocre\cr
 Type: \tab Package\cr
-Version: \tab 0.3.1\cr
-Date: \tab 2017-02-07\cr
+Version: \tab 0.3.2\cr
+Date: \tab 2017-03-10\cr
 License: \tab GPL-2\cr
 }
 \code{cset} computes joint confidence regions and (simultaneous) confidence intervals around multivariate normal means. The parameter estimates and interval bounds (in the case of confidence regions their boundaries are projected onto the axes) are displayed with \code{print} or \code{summary}, and \code{plot} generates a graph of the estimate and region or intervals and allows for some fine tuning e.g., shading of an equivalence region. 

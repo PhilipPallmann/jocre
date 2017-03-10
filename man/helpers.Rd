@@ -13,7 +13,7 @@
 
 \usage{
 \method{plot}{JOC}(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=log(c(0.77, 1.3)),
-     ylim=log(c(0.77, 1.3)), col="black", \dots)
+     ylim=log(c(0.77, 1.3)), col="black", convexify=FALSE, \dots)
 
 \method{print}{JOC}(x, digits=max(3, getOption("digits") - 4), \dots)
 
@@ -36,6 +36,7 @@
   \item{xlim}{A numeric vector of length two specifying the plotting range on the x-axis. Default is \code{log(c(0.77, 1.3))} for \code{plot.JOC} and \code{NULL} for \code{plot.JOCMV}.}
   \item{ylim}{A numeric vector of length two specifying the plotting range on the y-axis. Default is \code{log(c(0.77, 1.3))} for \code{plot.JOC} and \code{NULL} for \code{plot.JOCMV}.}
   \item{col}{A character string specifying the colour of the plotted region or intervals.}
+  \item{convexify}{A logical specifying whether the convex hull around a non-convex region should be plotted instead of the region itself. Ignored unless \code{method="limacon.fin"} or \code{method="limacon.asy"} for the \code{JOC} object. Default is \code{FALSE}.}
   \item{\dots}{Further plotting arguments to be passed to methods. Type \code{?plot} for details.}
 }
 
