@@ -66,7 +66,8 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
   }
   if(x$method %in% c("limacon.asy", "limacon.fin")){
     if(convexify==FALSE){
-      points(x$cr, pch=20, col=col, cex=0.5)
+      #points(x$cr, pch=20, col=col, cex=0.5)
+      polygon(x$cr, col=NULL, border=col, lwd=2)
     }else{
       polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)
     }
