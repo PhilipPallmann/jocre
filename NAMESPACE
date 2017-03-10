@@ -4,6 +4,7 @@ importFrom("boot", "boot")
 importFrom("graphics", "par", "plot", "points", "polygon", "rect", "segments")
 importFrom("grDevices", "chull")
 importFrom("KernSmooth", "bkde2D", "dpik")
+importFrom("TSP", "solve_TSP", "TSP")
 import("plyr")
 importFrom("stats", "pchisq", "pf", "pnorm", "qchisq", "qf", "qnorm", "qt", "rf", "var")
 
