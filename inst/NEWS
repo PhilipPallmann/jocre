@@ -9,6 +9,7 @@ Please report bugs or unexpected behaviour to Philip Pallmann <p.pallmann@lancas
 Version 0.3.3 (12 May 2017)
 
 - Added bootstrap method to cset().
+- Fixed minor bug with empirical Bayes method in cset().
 
 ##########################
 

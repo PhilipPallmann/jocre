@@ -28,7 +28,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, nboot=1e4, TsengBrownA=1, T
   
   if(method=="boot.kern"){
     
-    if(p > 2){stop("Only implemented for 2 dimensions.")}
+    if(p > 2){stop("The fixed sequence procedure is currently only implemented for 2-dimensional data.")}
     
     bivarmean <- function(x, d) {
       e <- x[d, ]
@@ -1137,7 +1137,11 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, nboot=1e4, TsengBrownA=1, T
   Out$ci <- ciFinal
   Out$n <- n
   Out$p <- p
-  Out$est <- est
+  if(method=="emp.bayes"){
+    Out$est <- JSplus
+  }else{
+    Out$est <- est
+  }
   Out$cov <- cov
   Out$poolvar <- poolvar
   Out$df <- df
