@@ -6,7 +6,7 @@ importFrom("grDevices", "chull")
 importFrom("KernSmooth", "bkde2D", "dpik")
 importFrom("TSP", "solve_TSP", "TSP")
 import("plyr")
-importFrom("stats", "pchisq", "pf", "pnorm", "qchisq", "qf", "qnorm", "qt", "rf", "var")
+importFrom("stats", "dist", "pchisq", "pf", "pnorm", "qchisq", "qf", "qnorm", "qt", "rf", "var")
 
 S3method(plot, JOC)
 S3method(print, JOC)
