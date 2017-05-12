@@ -1,6 +1,6 @@
 print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
   
-  if(x$method %in% c("expanded", "fixseq", "tost")){
+  if(x$method %in% c("expanded", "fix.seq", "tost")){
     
     cat(paste("Parameter estimates and ", 100 * (1 - x$alpha), "% simultaneous confidence intervals:\n\n", sep=""))
     
@@ -20,7 +20,7 @@ print.JOC <- function(x, digits=max(3, getOption("digits") - 4), ...){
 
 summary.JOC <- function(object, digits=max(3, getOption("digits") - 4), ...){
   
-  if(object$method %in% c("expanded", "fixseq", "tost")){
+  if(object$method %in% c("expanded", "fix.seq", "tost")){
     
     cat(paste("Parameter estimates and ", 100 * (1 - object$alpha), "% simultaneous confidence intervals:\n\n", sep=""))
     
@@ -70,10 +70,10 @@ plot.JOC <- function(x, equi=log(c(0.8, 1.25)), axnames=NULL, main=NULL, xlim=lo
       polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)
     }
   }
-  if(x$method %in% c("emp.bayes", "hotelling", "standard.cor", "standard.ind", "tseng", "tseng.brown")){
+  if(x$method %in% c("boot.kern", "emp.bayes", "hotelling", "standard.cor", "standard.ind", "tseng", "tseng.brown")){
     polygon(x$cr[chull(x$cr), -3], col=NULL, border=col, lwd=2)
   }
-  if(x$method %in% c("expanded", "fixseq", "tost")){
+  if(x$method %in% c("expanded", "fix.seq", "tost")){
     segments(x0=x$ci[1], x1=x$ci[3], y0=x$est[2], y1=x$est[2], lwd=2, col=col)
     segments(y0=x$ci[2], y1=x$ci[4], x0=x$est[1], x1=x$est[1], lwd=2, col=col)
   }

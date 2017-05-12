@@ -6,20 +6,21 @@
 
 \description{Computes boundaries of (simultaneous) confidence regions and intervals around multivariate normal means using different methods.}
 
-\usage{cset(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=1)}
+\usage{cset(dat, method, alpha=0.1, steps=NULL, nboot=1e4, TsengBrownA=1, TsengBrownB=1)}
 
 \arguments{
   \item{dat}{A matrix or data.frame with independent units in rows and multivariate outcomes in columns.}
   \item{method}{A character string specifying the method to be used. See details for available \code{method}s.}
   \item{alpha}{A numeric value giving the type I error level to be controlled. Default is \code{0.1}.}
   \item{steps}{An integer setting the initial number of steps for the search algorithm. Default is \code{NULL}, which chooses 300 for two-dimensional and 50 for higher-dimensional problems.}
+  \item{nboot}{A numeric giving the number of bootstrap replications to be used when \code{method="bootkern"} (ignored otherwise). Default is \code{1e4}.}
   \item{TsengBrownA}{A numeric giving the parameter A to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
   \item{TsengBrownB}{A numeric giving the parameter B to be used when \code{method="tseng.brown"} (ignored otherwise). Default is \code{1}.}
 }
 
-\details{Available \code{method}s for confidence regions are: \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters described in Chew (1966); \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997).
+\details{Available \code{method}s for confidence regions are: \code{boot.kern} for the nonparametric bootstrap method using kernel density estimation described in Pallmann & Jaki (2017); \code{emp.bayes} for the empirical Bayes region described in Casella & Hwang (1983); \code{hotelling} for the Hotelling-type region described in Wang et al (1999); \code{limacon.asy} for the limacon-shaped mimimum expected volume region described in Brown et al (1995); \code{limacon.fin} for the finite-sample variant of the minimum expected volume region described in Berger & Hsu (1996); \code{standard.cor} for the standard region incorporating correlation between parameters described in Chew (1966); \code{standard.ind} for the standard region ignoring correlation between parameters; \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987); \code{tseng} for the mimimum expected interval length region described in Tseng (2002); \code{tseng.brown} for the pseudo-empirical Bayes region described in Tseng & Brown (1997).
 
-Available \code{method}s for confidence intervals are: \code{expanded} for the two one-sided test (TOST) procedure (Schuirmann 1987) using the expanded intervals described e.g., in Bofinger (1992) and Hsu et al. (1994); \code{fixseq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987).
+Available \code{method}s for confidence intervals are: \code{expanded} for the two one-sided test (TOST) procedure (Schuirmann 1987) using the expanded intervals described e.g., in Bofinger (1992) and Hsu et al. (1994); \code{fix.seq} for the fixed sequence intervals described in Maurer et al (1995) and Hsu & Berger (1999); \code{tost} for the two one-sided test (TOST) intervals described in Schuirmann (1987).
 
 See also an overview and comparison of all methods in Pallmann & Jaki (2017).}
 

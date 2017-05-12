@@ -1,4 +1,4 @@
-cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=1){
+cset <- function(dat, method, alpha=0.1, steps=NULL, nboot=1e4, TsengBrownA=1, TsengBrownB=1){
   
   Var1 <- Var2 <- NULL # just to appease RCMD check
   
@@ -13,7 +13,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
   #s2 <- poolvar/n
   #s <- sqrt(poolvar/n)
   
-  method <- match.arg(method, choices=c("bootkern", "emp.bayes", "expanded", "fixseq", "hotelling",
+  method <- match.arg(method, choices=c("boot.kern", "emp.bayes", "expanded", "fix.seq", "hotelling",
                                         "limacon.asy", "limacon.fin", "standard.cor", "standard.ind",
                                         "tost", "tseng", "tseng.brown"))
   
@@ -26,9 +26,47 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     }
   }
   
-  if(method=="bootkern"){
+  if(method=="boot.kern"){
     
-    stop("Not implemented (yet).")
+    if(p > 2){stop("Only implemented for 2 dimensions.")}
+    
+    bivarmean <- function(x, d) {
+      e <- x[d, ]
+      return(c(mean(e[, 1]), mean(e[, 2])))
+    } # werden 1. und 2. Spalte immer zusammen gesampelt?!
+    
+    b <- boot(dat, bivarmean, R=nboot)
+    bdat <- as.data.frame(b$t)
+    
+    kern <- bkde2D(bdat, bandwidth=sapply(bdat, dpik))
+    
+    alphasum <- sum(kern$fhat) * alpha
+    
+    while(sum(kern$fhat, na.rm=TRUE) > alphasum){
+      kern$fhat[which.max(kern$fhat)] <- NA
+    }
+    
+    KERN <- is.na(kern$fhat)
+    K <- expand.grid(kern$x1, kern$x2)
+    K$truefalse <- as.vector(KERN)
+    K <- K[K$truefalse==1, ]
+    
+    ciFinal <- rbind(range(K$Var1), range(K$Var2))
+    
+    hu <- chull(K[, -3])
+    hull <- c(hu, hu[1])
+    
+    crFinal <- K[hull, -3]
+    
+    #par(mar=c(5, 5, 4, 2))
+    #plot(0, xlim=log(plotrange), ylim=log(plotrange), las=1, xlab=axisnames[1], ylab=axisnames[2],
+    #     cex.main=2.5, cex.axis=1.5, cex.lab=1.7, main=main)
+    #if(is.null(equi)==FALSE){
+    #  rect(log(1/equi), log(1/equi), log(equi), log(equi), col="gray95", border=NA)
+    #}
+    #polygon(K[hull, ], col=col)
+    #points(est[1], est[2], pch=19, col="white")
+    #par(mar=c(5, 4, 4, 2))
     
   }
   
@@ -177,7 +215,7 @@ cset <- function(dat, method, alpha=0.1, steps=NULL, TsengBrownA=1, TsengBrownB=
     
   }
   
-  if(method=="fixseq"){
+  if(method=="fix.seq"){
     
     if(p > 2){
       stop("The fixed sequence procedure is currently only implemented for 2-dimensional data.")
